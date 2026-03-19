@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wisconsin Golf Trip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green-deep:    #0d1f14;
+      --green-dark:    #122318;
+      --green-mid:     #1a3525;
+      --green-surface: #1f3d2c;
+      --green-muted:   #2d5240;
+      --gold:          #c9a84c;
+      --gold-light:    #e2c47a;
+      --gold-dim:      #8b6e2e;
+      --cream:         #f5f0e8;
+      --cream-dim:     #c8c0b0;
+      --white:         #ffffff;
+      --text-muted:    #8a9e90;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--green-deep);
+      color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ──────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 120% 60% at 50% 80%, #1a4a2a 0%, transparent 65%),
+        radial-gradient(ellipse 80% 40% at 20% 50%, #162d1e 0%, transparent 60%),
+        radial-gradient(ellipse 80% 40% at 80% 30%, #0e2218 0%, transparent 60%),
+        var(--green-deep);
+      z-index: 0;
+    }
+    .hills { position: absolute; bottom: 0; left: 0; width: 100%; height: 45%; z-index: 1; }
+    .hill { position: absolute; bottom: 0; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+    .hill-1 { width:70%; height:55%; left:-5%;  background:linear-gradient(180deg,#1a3d26 0%,#122318 100%); animation:sway1 12s ease-in-out infinite; }
+    .hill-2 { width:55%; height:70%; left:30%;  background:linear-gradient(180deg,#153020 0%,#0f1e15 100%); animation:sway2 15s ease-in-out infinite; }
+    .hill-3 { width:60%; height:45%; left:55%;  background:linear-gradient(180deg,#1c4029 0%,#132519 100%); animation:sway1 10s ease-in-out infinite reverse; }
+    .hill-4 { width:40%; height:30%; left:10%;  background:linear-gradient(180deg,#20482e 0%,#172c1f 100%); animation:sway2 18s ease-in-out infinite; }
+    @keyframes sway1 { 0%,100%{transform:scaleX(1) translateX(0)} 50%{transform:scaleX(1.02) translateX(8px)} }
+    @keyframes sway2 { 0%,100%{transform:scaleX(1) translateX(0)} 50%{transform:scaleX(0.98) translateX(-6px)} }
+    .hero::after {
+      content:''; position:absolute; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+      background-size:180px; opacity:0.4; z-index:2; pointer-events:none;
+    }
+    .hero-content { position:relative; z-index:3; }
+    .hero-eyebrow {
+      font-size:0.7rem; font-weight:500; letter-spacing:0.35em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:1.5rem; opacity:0; animation:fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-title {
+      font-family:'Cormorant Garamond',Georgia,serif;
+      font-size:clamp(3.5rem,12vw,9rem); font-weight:300; line-height:0.92;
+      letter-spacing:-0.02em; color:var(--cream); margin-bottom:0.3rem;
+      opacity:0; animation:fadeUp 0.9s 0.4s forwards;
+    }
+    .hero-title span { display:block; font-style:italic; color:var(--gold-light); font-weight:300; }
+    .hero-rule { width:80px; height:1px; background:var(--gold); margin:2rem auto; opacity:0; animation:fadeUp 0.8s 0.7s forwards; }
+    .hero-tagline {
+      font-size:clamp(0.85rem,2.5vw,1.05rem); font-weight:400; letter-spacing:0.2em;
+      text-transform:uppercase; color:var(--cream-dim); opacity:0; animation:fadeUp 0.8s 0.9s forwards;
+    }
+    .hero-tagline .sep { color:var(--gold); margin:0 0.5em; }
+    .hero-scroll {
+      position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+      z-index:3; display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+      opacity:0; animation:fadeUp 0.8s 1.4s forwards;
+    }
+    .hero-scroll span { font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--text-muted); }
+    .scroll-line { width:1px; height:40px; background:linear-gradient(to bottom,var(--gold),transparent); animation:scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:0.6} 50%{transform:scaleY(1.3);opacity:1} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ─── TABS ──────────────────────────────────── */
+    .tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 31, 20, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--green-surface);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      padding: 0;
+    }
+    .tab-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 1.1rem 2.5rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--cream-dim); }
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* tab panels */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ─── SHARED LAYOUT ─────────────────────────── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 5rem 0; }
+
+    /* ─── DAY HEADERS ───────────────────────────── */
+    .day-header { display:flex; align-items:flex-start; gap:1.5rem; margin-bottom:3rem; }
+    .day-number {
+      font-family:'Cormorant Garamond',serif; font-size:5rem; font-weight:300;
+      line-height:1; color:var(--green-muted); letter-spacing:-0.04em;
+      flex-shrink:0; margin-top:-0.3rem;
+    }
+    .day-info { border-left:1px solid var(--gold-dim); padding-left:1.5rem; }
+    .day-label { font-size:0.65rem; font-weight:500; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem; }
+    .day-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,5vw,2.8rem); font-weight:500; line-height:1.1; color:var(--cream); margin-bottom:0.4rem; }
+    .day-subtitle { font-size:0.8rem; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-light); font-style:italic; }
+
+    /* ─── DIVIDERS ───────────────────────────────── */
+    .section-divider { border:none; border-top:1px solid var(--green-surface); margin:0; }
+
+    /* ─── COURSE CARD (planners) ─────────────────── */
+    .course-card {
+      background:var(--green-dark); border:1px solid var(--green-surface);
+      border-radius:2px; padding:2rem; position:relative; overflow:hidden;
+    }
+    .course-card::before {
+      content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--gold);
+    }
+    .course-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
+    .course-name { font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,4vw,1.8rem); font-weight:500; color:var(--cream); line-height:1.2; }
+    .course-badge {
+      font-size:0.62rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--green-deep); background:var(--gold); padding:0.25em 0.7em;
+      border-radius:2px; white-space:nowrap; flex-shrink:0; margin-top:0.3rem;
+    }
+    .course-desc { font-size:0.9rem; color:var(--cream-dim); margin-bottom:1.5rem; line-height:1.65; }
+    .course-meta { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:0.5rem 2rem; margin-bottom:1.5rem; }
+    .meta-item { display:flex; align-items:flex-start; gap:0.6rem; font-size:0.8rem; }
+    .meta-icon { color:var(--gold-dim); font-size:0.9rem; flex-shrink:0; margin-top:0.05rem; }
+    .meta-label { color:var(--text-muted); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; display:block; }
+    .meta-value { color:var(--cream); font-weight:400; }
+    .meta-value a { color:var(--gold-light); text-decoration:none; border-bottom:1px solid var(--gold-dim); transition:color 0.2s,border-color 0.2s; }
+    .meta-value a:hover { color:var(--gold); border-color:var(--gold); }
+
+    /* ─── COST TABLE ─────────────────────────────── */
+    .cost-table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:1.25rem; }
+    .cost-table th { text-align:left; font-size:0.62rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-muted); padding:0 0 0.6rem 0; border-bottom:1px solid var(--green-surface); }
+    .cost-table th:last-child, .cost-table td:last-child { text-align:right; }
+    .cost-table td { padding:0.5rem 0; color:var(--cream-dim); border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:top; }
+    .cost-table .cost-calc { color:var(--text-muted); font-size:0.75rem; }
+    .cost-table .cost-amount { color:var(--cream); font-weight:500; }
+    .cost-table tr.total td { border-top:1px solid var(--gold-dim); border-bottom:none; color:var(--gold-light); font-weight:500; padding-top:0.75rem; }
+    .cost-per-person { font-size:0.72rem; color:var(--text-muted); text-align:right; margin-top:0.4rem; }
+    .cost-per-person strong { color:var(--gold); }
+
+    /* ─── DRIVE CONNECTOR ───────────────────────── */
+    .drive-connector { display:flex; align-items:center; gap:1rem; padding:1.2rem 0; color:var(--text-muted); font-size:0.78rem; letter-spacing:0.1em; }
+    .drive-line { flex:1; height:1px; background:repeating-linear-gradient(to right,var(--green-muted) 0,var(--green-muted) 6px,transparent 6px,transparent 12px); }
+    .drive-badge { display:flex; align-items:center; gap:0.5rem; padding:0.4rem 0.9rem; border:1px solid var(--green-muted); border-radius:20px; white-space:nowrap; font-size:0.72rem; }
+    .drive-arrow { color:var(--gold); font-size:0.9rem; }
+
+    /* ─── TIME LABEL ─────────────────────────────── */
+    .time-label { display:inline-flex; align-items:center; gap:0.5rem; font-size:0.65rem; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+    .time-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); }
+
+    /* ─── BUDGET SUMMARY ─────────────────────────── */
+    .summary-section { background:var(--green-dark); border:1px solid var(--green-surface); border-top:3px solid var(--gold); padding:3rem 2.5rem; }
+    .summary-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,5vw,2.5rem); font-weight:400; color:var(--cream); margin-bottom:0.5rem; }
+    .summary-subtitle { font-size:0.75rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--text-muted); margin-bottom:2.5rem; }
+    .summary-rows { border-top:1px solid var(--green-surface); }
+    .summary-row { display:flex; justify-content:space-between; align-items:baseline; padding:0.9rem 0; border-bottom:1px solid var(--green-surface); gap:1rem; }
+    .summary-row-label { font-size:0.85rem; color:var(--cream-dim); }
+    .summary-row-sub { font-size:0.72rem; color:var(--text-muted); display:block; }
+    .summary-row-amount { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:500; color:var(--cream); }
+    .summary-row.grand { border-bottom:none; padding-top:1.25rem; }
+    .summary-row.grand .summary-row-label { font-size:1rem; font-weight:500; color:var(--cream); }
+    .summary-row.grand .summary-row-amount { font-size:2rem; color:var(--gold-light); }
+    .budget-meter-wrap { margin:2.5rem 0; }
+    .budget-meter-labels { display:flex; justify-content:space-between; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.6rem; }
+    .budget-meter { height:6px; background:var(--green-surface); border-radius:3px; overflow:hidden; }
+    .budget-bar { height:100%; width:0; background:linear-gradient(to right,var(--gold-dim),var(--gold)); border-radius:3px; transition:width 1.5s 0.3s ease-out; }
+    .budget-bar.animate { width:93.97%; }
+    .budget-remaining-note { text-align:right; font-size:0.75rem; color:var(--gold-dim); margin-top:0.5rem; }
+    .budget-remaining-note strong { color:var(--gold); }
+    .per-person-box { background:var(--green-surface); border-left:3px solid var(--gold); padding:1.25rem 1.5rem; margin-top:2rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+    .per-person-label { font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); }
+    .per-person-amount { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:500; color:var(--gold-light); }
+    .per-person-note { font-size:0.72rem; color:var(--text-muted); }
+
+    /* ─── FAQ CARDS ──────────────────────────────── */
+    .faq-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+    .faq-card { background:var(--green-dark); border:1px solid var(--green-surface); padding:2rem; }
+    .faq-icon { font-size:1.8rem; margin-bottom:1rem; display:block; }
+    .faq-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:500; color:var(--gold-light); margin-bottom:0.75rem; line-height:1.3; }
+    .faq-body { font-size:0.85rem; color:var(--cream-dim); line-height:1.7; }
+
+    /* ─── FOOTER ─────────────────────────────────── */
+    footer { text-align:center; padding:3rem 1.5rem; border-top:1px solid var(--green-surface); }
+    .footer-crest { font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic; color:var(--gold-dim); margin-bottom:0.5rem; }
+    .footer-note { font-size:0.7rem; color:var(--text-muted); letter-spacing:0.15em; }
+
+    /* ─── SCROLL REVEAL ──────────────────────────── */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ══════════════════════════════════════════════
+       PLAYERS TAB STYLES
+    ══════════════════════════════════════════════ */
+
+    /* Course visual card */
+    .p-course-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+
+    /* CSS landscape "photo" */
+    .p-landscape {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    /* Real course photos */
+    .landscape-quitquioc { background: url('golf-trip-images/quitquioc_new.jpg') center center / cover no-repeat; }
+    .landscape-bull      { background: url('golf-trip-images/thebull.jpg') center center / cover no-repeat; }
+    .landscape-baths     { background: url('golf-trip-images/thebaths.jpg') center center / cover no-repeat; }
+    .landscape-irish     { background: url('golf-trip-images/irish.jpg') center center / cover no-repeat; }
+    .landscape-river     { background: url('golf-trip-images/rivercourse.jpg') center center / cover no-repeat; }
+
+    /* Gradient overlay so text stays readable */
+    .p-landscape::before,
+    .p-landscape::after { content: ''; position: absolute; }
+
+    .p-landscape::before {
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.65) 100%);
+    }
+    .p-landscape::after { display: none; }
+
+    /* Text overlay on landscape */
+    .p-landscape-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 2rem 1.25rem;
+      z-index: 2;
+    }
+
+    .p-course-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 500;
+      color: var(--cream);
+      line-height: 1.15;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+      margin-bottom: 0.3rem;
+    }
+
+    .p-course-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green-deep);
+      background: var(--gold);
+      padding: 0.2em 0.65em;
+      border-radius: 2px;
+    }
+
+    /* Stats strip */
+    .p-stats {
+      background: var(--green-dark);
+      border: 1px solid var(--green-surface);
+      border-top: none;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-radius: 0 0 4px 4px;
+    }
+
+    .p-stat {
+      padding: 1rem 0.75rem;
+      text-align: center;
+      border-right: 1px solid var(--green-surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .p-stat:last-child { border-right: none; }
+
+    .p-stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+    .p-stat-value.sm {
+      font-size: 0.95rem;
+      line-height: 1.25;
+    }
+
+    .p-stat-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Description under stats */
+    .p-desc {
+      background: var(--green-dark);
+      border: 1px solid var(--green-surface);
+      border-top: none;
+      padding: 1.25rem 2rem 1.5rem;
+      border-radius: 0 0 4px 4px;
+      font-size: 0.88rem;
+      color: var(--cream-dim);
+      line-height: 1.7;
+    }
+
+    /* When stats + desc are both present, only last gets bottom radius */
+    .p-course-card .p-stats {
+      border-radius: 0;
+    }
+    .p-course-card .p-desc {
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Highlight pill for exceptional stats */
+    .p-highlight {
+      display: inline-block;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid var(--gold-dim);
+      color: var(--gold-light);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3em 0.8em;
+      border-radius: 20px;
+      margin-right: 0.4rem;
+      margin-top: 0.5rem;
+      display: inline-block;
+    }
+
+    .p-highlights { margin-top: 0.75rem; }
+
+    /* ─── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 600px) {
+      .day-header { flex-direction:column; gap:0.5rem; }
+      .day-number { font-size:3rem; }
+      .day-info { border-left:none; border-top:1px solid var(--gold-dim); padding-left:0; padding-top:0.75rem; }
+      .course-card { padding:1.25rem; }
+      .summary-section { padding:2rem 1.25rem; }
+      .per-person-box { flex-direction:column; gap:0.5rem; }
+      .hero-title { font-size:clamp(3rem,14vw,6rem); }
+      .p-stats { grid-template-columns: repeat(2,1fr); }
+      .p-stat:nth-child(2) { border-right:none; }
+      .p-stat:nth-child(3) { border-top:1px solid var(--green-surface); }
+      .p-stat:nth-child(4) { border-top:1px solid var(--green-surface); }
+      .tab-btn { padding:1rem 1.2rem; font-size:0.65rem; letter-spacing:0.15em; }
+      .p-landscape { height:200px; }
+      .p-desc { padding:1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO (shared) -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hills" aria-hidden="true">
+    <div class="hill hill-1"></div>
+    <div class="hill hill-3"></div>
+    <div class="hill hill-2"></div>
+    <div class="hill hill-4"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Wisconsin &nbsp;·&nbsp; Group Itinerary</p>
+    <h1 class="hero-title">Golf<br><span>Trip</span></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-tagline">3 Days<span class="sep">·</span>5 Courses<span class="sep">·</span>100 Holes</p>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- TAB NAV -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="planners">For the Planners</button>
+  <button class="tab-btn"        data-tab="players">For the Players</button>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     TAB: FOR THE PLANNERS
+══════════════════════════════════════════ -->
+<div id="tab-planners" class="tab-panel active">
+
+  <!-- DAY 1 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">01</div>
+        <div class="day-info">
+          <p class="day-label">Day One</p>
+          <h2 class="day-title">Quit Qui Oc Golf Club</h2>
+          <p class="day-subtitle">The Warm-Up</p>
+        </div>
+      </div>
+      <div class="course-card reveal">
+        <div class="course-top">
+          <div class="course-name">Quit Qui Oc Golf Club</div>
+          <span class="course-badge">27-hole Facility · 36 holes played</span>
+        </div>
+        <p class="course-desc">Start with an approachable, fun course to get back in the swing. Perfect for anyone shaking off the rust. Beautiful rolling terrain, friendly vibes — you'll build confidence before tackling the heavier courses ahead. Three distinct 9-hole courses keep it fresh all day: Original 18 + Glacial 9 + 9 replay.</p>
+        <div class="course-meta">
+          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">500 Quit Qui Oc Lane<br>Elkhart Lake, WI 53020</span></div></div>
+          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 876-2833</span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.quitquiocgolf.com" target="_blank">quitquiocgolf.com</a></span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Drive</span><span class="meta-value">~25 min each way</span></div></div>
+        </div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+          <tbody>
+            <tr><td>Green Fees</td><td class="cost-calc">$75 × 18 players × 2 rounds</td><td class="cost-amount">$2,700</td></tr>
+            <tr><td>Cart Rental</td><td class="cost-calc">$25 × 18 players × 2 rounds</td><td class="cost-amount">$900</td></tr>
+            <tr class="total"><td colspan="2"><strong>Day 1 Total</strong></td><td class="cost-amount"><strong>$3,600</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="cost-per-person">Per person (18 players): <strong>$200.00</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">02</div>
+        <div class="day-info">
+          <p class="day-label">Day Two</p>
+          <h2 class="day-title">The Bull → The Baths</h2>
+          <p class="day-subtitle">The Challenge → The Recovery</p>
+        </div>
+      </div>
+      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+      <div class="course-card reveal">
+        <div class="course-top">
+          <div class="course-name">The Bull at Pinehurst Farms</div>
+          <span class="course-badge">Jack Nicklaus Signature · 18 holes</span>
+        </div>
+        <p class="course-desc">Jack Nicklaus's most demanding design. Dramatic elevation changes, strategic bunkering — every shot matters. This is the test that separates your best golf from your average round.</p>
+        <div class="course-meta">
+          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">9425 Highway 32<br>Sheboygan Falls, WI 53085</span></div></div>
+          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 467-1500</span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.golfthebull.com" target="_blank">golfthebull.com</a></span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Drive from AirBnB</span><span class="meta-value">~15 min</span></div></div>
+        </div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+          <tbody>
+            <tr><td>Green Fees</td><td class="cost-calc">$200 × 18 players</td><td class="cost-amount">$3,600</td></tr>
+            <tr><td>Cart Rental</td><td class="cost-calc">$10 × 18 players</td><td class="cost-amount">$180</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="drive-connector reveal">
+        <div class="drive-line"></div>
+        <div class="drive-badge"><span class="drive-arrow">→</span>Drive to The Baths &nbsp;~20 min</div>
+        <div class="drive-line"></div>
+      </div>
+      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+      <div class="course-card reveal">
+        <div class="course-top">
+          <div class="course-name">The Baths at Blackwolf Run</div>
+          <span class="course-badge">Par-3 · 10 holes · Hot Springs</span>
+        </div>
+        <p class="course-desc">Reset with a stunning 10-hole par-3. Chase holes-in-one, bet on the 1-acre putting green, enjoy drinks at the outdoor bar, and dip your toes in the natural hot springs. The perfect afternoon unwind.</p>
+        <div class="course-meta">
+          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
+          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Return to AirBnB</span><span class="meta-value">~25 min</span></div></div>
+        </div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+          <tbody>
+            <tr><td>Green Fees</td><td class="cost-calc">$150 × 18 players</td><td class="cost-amount">$2,700</td></tr>
+            <tr><td>Cart / Walk</td><td class="cost-calc">$20 × 18 players</td><td class="cost-amount">$360</td></tr>
+            <tr class="total"><td colspan="2"><strong>Day 2 Total</strong></td><td class="cost-amount"><strong>$6,890</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="cost-per-person">Per person (18 players): <strong>$382.78</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">03</div>
+        <div class="day-info">
+          <p class="day-label">Day Three</p>
+          <h2 class="day-title">Irish → River Course</h2>
+          <p class="day-subtitle">The Grand Finale</p>
+        </div>
+      </div>
+      <p class="course-desc reveal" style="margin-bottom:2rem;">Two of the top 50 courses in the country. Both Pete Dye masterpieces. Both championship-caliber. The trip ends on the most beautiful courses known to man.</p>
+      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+      <div class="course-card reveal">
+        <div class="course-top">
+          <div class="course-name">Whistling Straits — Irish Course</div>
+          <span class="course-badge">Pete Dye · Links-Inspired · 18 holes</span>
+        </div>
+        <p class="course-desc">Authentic links-inspired design without the soul-crushing difficulty of The Straits. Everything great about Whistling Straits — the drama, the beauty, the strategy — without the pain. Top 50 in the country.</p>
+        <div class="course-meta">
+          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
+          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Drive from AirBnB</span><span class="meta-value">~20 min</span></div></div>
+        </div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+          <tbody>
+            <tr><td>Green Fees</td><td class="cost-calc">$350 × 18 players</td><td class="cost-amount">$6,300</td></tr>
+            <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
+            <tr><td>Caddies / Tips</td><td class="cost-calc">$100 × 18 players</td><td class="cost-amount">$1,800</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="drive-connector reveal">
+        <div class="drive-line"></div>
+        <div class="drive-badge"><span class="drive-arrow">→</span>Drive to River Course &nbsp;~10 min</div>
+        <div class="drive-line"></div>
+      </div>
+      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+      <div class="course-card reveal">
+        <div class="course-top">
+          <div class="course-name">Blackwolf Run — River Course</div>
+          <span class="course-badge">Pete Dye Championship · 18 holes</span>
+        </div>
+        <p class="course-desc">Pure golf architecture poetry. River Course is a masterpiece of design — dramatic, beautiful, and relentlessly compelling. Finishing the trip on one of the most celebrated courses in the country.</p>
+        <div class="course-meta">
+          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
+          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Return to AirBnB</span><span class="meta-value">~20 min</span></div></div>
+        </div>
+        <table class="cost-table">
+          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+          <tbody>
+            <tr><td>Green Fees</td><td class="cost-calc">$400 × 18 players</td><td class="cost-amount">$7,200</td></tr>
+            <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
+            <tr><td>Caddies / Tips</td><td class="cost-calc">$100 × 18 players</td><td class="cost-amount">$1,800</td></tr>
+            <tr class="total"><td colspan="2"><strong>Day 3 Total</strong></td><td class="cost-amount"><strong>$17,700</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="cost-per-person">Per person (18 players): <strong>$983.33</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUDGET SUMMARY -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="summary-section reveal" id="budget-section">
+        <h2 class="summary-title">Trip Summary</h2>
+        <p class="summary-subtitle">Full Cost Breakdown · 18 Players</p>
+        <div class="summary-rows">
+          <div class="summary-row"><div><span class="summary-row-label">Day 1 — Quit Qui Oc</span><span class="summary-row-sub">36 holes · $200 / person</span></div><span class="summary-row-amount">$3,600</span></div>
+          <div class="summary-row"><div><span class="summary-row-label">Day 2 — The Bull + The Baths</span><span class="summary-row-sub">28 holes · $383 / person</span></div><span class="summary-row-amount">$6,890</span></div>
+          <div class="summary-row"><div><span class="summary-row-label">Day 3 — Irish + River</span><span class="summary-row-sub">36 holes · $983 / person</span></div><span class="summary-row-amount">$17,700</span></div>
+          <div class="summary-row"><div><span class="summary-row-label">Total Golf</span><span class="summary-row-sub">100 holes across 5 courses</span></div><span class="summary-row-amount">$28,190</span></div>
+          <div class="summary-row"><div><span class="summary-row-label">Budget Remaining</span><span class="summary-row-sub">For lodging, food, etc.</span></div><span class="summary-row-amount" style="color:var(--gold)">$1,810</span></div>
+          <div class="summary-row grand"><div><span class="summary-row-label">Total Budget</span></div><span class="summary-row-amount">$30,000</span></div>
+        </div>
+        <div class="budget-meter-wrap">
+          <div class="budget-meter-labels"><span>Golf spend — 93.97%</span><span>Remaining — 6.03%</span></div>
+          <div class="budget-meter"><div class="budget-bar" id="budget-bar"></div></div>
+          <p class="budget-remaining-note"><strong>$1,810</strong> remaining for lodging &amp; everything else</p>
+        </div>
+        <div class="per-person-box">
+          <div><p class="per-person-label">Total per person</p><p class="per-person-note">Golf only · 18 players · 100 holes</p></div>
+          <div class="per-person-amount">$1,566</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="container">
+      <div class="faq-grid">
+        <div class="faq-card reveal"><span class="faq-icon">⛳</span><h3 class="faq-title">Why Not The Straits Course?</h3><p class="faq-body">$750 per round, walking-only, 7,790 yards of unrelenting links golf. That's a solo mission, not a group vibe. We're here to maximize fun, not suffer through one brutal round. The Irish Course gives you everything great about Whistling Straits without the pain.</p></div>
+        <div class="faq-card reveal"><span class="faq-icon">🎯</span><h3 class="faq-title">100 Holes</h3><p class="faq-body">Playing 100 holes instead of 108 means we're leaving shots on the table. I want to see 8% more effort per hole. That means focus, strategy, and treating every shot like it matters. You've got 100 holes to showcase your best golf across 5 completely different courses. Make them count.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-crest">Wisconsin Golf Trip</p>
+    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 100 Holes &nbsp;·&nbsp; 18 Players</p>
+  </footer>
+</div><!-- end #tab-planners -->
+
+
+<!-- ══════════════════════════════════════════
+     TAB: FOR THE PLAYERS
+══════════════════════════════════════════ -->
+<div id="tab-players" class="tab-panel">
+
+  <!-- DAY 1 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">01</div>
+        <div class="day-info">
+          <p class="day-label">Day One</p>
+          <h2 class="day-title">Quit Qui Oc Golf Club</h2>
+          <p class="day-subtitle">The Warm-Up</p>
+        </div>
+      </div>
+
+      <div class="p-course-card reveal">
+        <div class="p-landscape landscape-quitquioc">
+          <div class="p-landscape-overlay">
+            <div class="p-course-name">Quit Qui Oc Golf Club</div>
+            <span class="p-course-badge">Elkhart Lake, Wisconsin</span>
+          </div>
+        </div>
+        <div class="p-stats">
+          <div class="p-stat"><div class="p-stat-value">36</div><div class="p-stat-label">Holes Today</div></div>
+          <div class="p-stat"><div class="p-stat-value">27</div><div class="p-stat-label">Hole Facility</div></div>
+          <div class="p-stat"><div class="p-stat-value sm">One Course</div><div class="p-stat-label">No Travel</div></div>
+          <div class="p-stat"><div class="p-stat-value">🍺</div><div class="p-stat-label">Great Beer</div></div>
+        </div>
+        <div class="p-desc">
+          The perfect warm-up. You're playing all 27 holes the course has to offer — the full original layout plus the Glacial 9 — then coming back around for 9 more to close it out. Rolling terrain, forgiving fairways, and the kind of relaxed energy that reminds you why you love golf. This is where rust gets knocked off and confidence gets built before the serious stuff starts tomorrow.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">02</div>
+        <div class="day-info">
+          <p class="day-label">Day Two</p>
+          <h2 class="day-title">The Bull → The Baths</h2>
+          <p class="day-subtitle">The Challenge → The Recovery</p>
+        </div>
+      </div>
+
+      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+      <div class="p-course-card reveal">
+        <div class="p-landscape landscape-bull">
+          <div class="p-landscape-overlay">
+            <div class="p-course-name">The Bull at Pinehurst Farms</div>
+            <span class="p-course-badge">Jack Nicklaus Signature Design</span>
+          </div>
+        </div>
+        <div class="p-stats">
+          <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+          <div class="p-stat"><div class="p-stat-value">Jack</div><div class="p-stat-label">Nicklaus Design</div></div>
+          <div class="p-stat"><div class="p-stat-value sm">Unforgiving</div><div class="p-stat-label">Greens</div></div>
+          <div class="p-stat"><div class="p-stat-value">↑↓</div><div class="p-stat-label">Elevation Drama</div></div>
+        </div>
+        <div class="p-desc">
+          This is where the trip gets serious. A Nicklaus Signature course with dramatic elevation changes that demand every club in your bag. The bunkering is strategic, the greens are fast, and there is no such thing as an autopilot shot here. Play this one like it matters — because it does.
+        </div>
+      </div>
+
+      <div class="drive-connector reveal">
+        <div class="drive-line"></div>
+        <div class="drive-badge"><span class="drive-arrow">→</span>Short drive to The Baths &nbsp;~20 min</div>
+        <div class="drive-line"></div>
+      </div>
+
+      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+      <div class="p-course-card reveal">
+        <div class="p-landscape landscape-baths">
+          <div class="p-landscape-overlay">
+            <div class="p-course-name">The Baths at Blackwolf Run</div>
+            <span class="p-course-badge">Kohler, Wisconsin · Natural Springs</span>
+          </div>
+        </div>
+        <div class="p-stats">
+          <div class="p-stat"><div class="p-stat-value">10</div><div class="p-stat-label">Holes</div></div>
+          <div class="p-stat"><div class="p-stat-value">Par 30</div><div class="p-stat-label">Score</div></div>
+          <div class="p-stat"><div class="p-stat-value sm">1 Acre</div><div class="p-stat-label">Putting Green</div></div>
+          <div class="p-stat"><div class="p-stat-value">🏊</div><div class="p-stat-label">Natural Springs</div></div>
+        </div>
+        <div class="p-desc">
+          Pure decompression. After The Bull beats you up all morning, The Baths is the exact vibe you need. It's a relaxed, beautiful 10-hole par-3 where the whole point is to have fun — kick your shoes off, chase a hole-in-one or two, and make some side bets on the 1-acre putting green. Outdoor food and drink vendors are set up so there's no interruption to the good times. When you're done, dip your feet in the natural springs on site. It's one of those afternoons that makes everyone remember why they came on this trip.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">03</div>
+        <div class="day-info">
+          <p class="day-label">Day Three</p>
+          <h2 class="day-title">Irish → River Course</h2>
+          <p class="day-subtitle">The Grand Finale</p>
+        </div>
+      </div>
+
+      <p class="course-desc reveal" style="margin-bottom:2rem; font-size:1rem; color:var(--cream);">
+        Two of the <strong style="color:var(--gold-light)">top 50 courses in the United States</strong>. Back to back. Both Pete Dye masterpieces. This is the day the trip was built for.
+      </p>
+
+      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+      <div class="p-course-card reveal">
+        <div class="p-landscape landscape-irish">
+          <div class="p-landscape-overlay">
+            <div class="p-course-name">Whistling Straits — Irish Course</div>
+            <span class="p-course-badge">Pete Dye · Links Golf · Kohler</span>
+          </div>
+        </div>
+        <div class="p-stats">
+          <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+          <div class="p-stat"><div class="p-stat-value">Top 50</div><div class="p-stat-label">USA Ranking</div></div>
+          <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
+          <div class="p-stat"><div class="p-stat-value">Links</div><div class="p-stat-label">Style</div></div>
+        </div>
+        <div class="p-desc">
+          Whistling Straits without the punishment. The Irish Course delivers genuine links-inspired golf — fescue rough, undulating fairways, wind in your face — but at a level where your round stays fun. This is Pete Dye at his most creative and his most playable. Soak up every hole. You're playing one of the best courses in America.
+        </div>
+      </div>
+
+      <div class="drive-connector reveal">
+        <div class="drive-line"></div>
+        <div class="drive-badge"><span class="drive-arrow">→</span>Same campus — River Course &nbsp;~10 min</div>
+        <div class="drive-line"></div>
+      </div>
+
+      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+      <div class="p-course-card reveal">
+        <div class="p-landscape landscape-river">
+          <div class="p-landscape-overlay">
+            <div class="p-course-name">Blackwolf Run — River Course</div>
+            <span class="p-course-badge">Pete Dye Championship · Kohler</span>
+          </div>
+        </div>
+        <div class="p-stats">
+          <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+          <div class="p-stat"><div class="p-stat-value">Top 50</div><div class="p-stat-label">USA Ranking</div></div>
+          <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
+          <div class="p-stat"><div class="p-stat-value">River</div><div class="p-stat-label">Runs Through It</div></div>
+        </div>
+        <div class="p-desc">
+          Golf architecture poetry. The Sheboygan River winds through the property, creating carries and risk-reward decisions that stay in your memory long after the round. Ranked among the best courses in America, the River Course is a fitting send-off to the best golf trip of your life. Play every shot like it's your last — because on this course, every single one deserves your full attention.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ (players) -->
+  <section>
+    <div class="container">
+      <div class="faq-grid">
+        <div class="faq-card reveal"><span class="faq-icon">⛳</span><h3 class="faq-title">Why Not The Straits Course?</h3><p class="faq-body">$750 per round, walking-only, 7,790 yards of unrelenting links golf. That's a solo mission, not a group vibe. We're here to maximize fun, not suffer through one brutal round. The Irish Course gives you everything great about Whistling Straits without the pain.</p></div>
+        <div class="faq-card reveal"><span class="faq-icon">🎯</span><h3 class="faq-title">100 Holes</h3><p class="faq-body">Playing 100 holes instead of 108 means we're leaving shots on the table. I want to see 8% more effort per hole. That means focus, strategy, and treating every shot like it matters. You've got 100 holes to showcase your best golf across 5 completely different courses. Make them count.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-crest">Wisconsin Golf Trip</p>
+    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 100 Holes &nbsp;·&nbsp; 18 Players</p>
+  </footer>
+</div><!-- end #tab-players -->
+
+
+<script>
+  // ── Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === target));
+      tabPanels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + target));
+      // scroll to top of content
+      window.scrollTo({ top: document.querySelector('.tab-nav').offsetTop, behavior: 'smooth' });
+      // re-trigger reveals in newly active panel
+      setTimeout(triggerReveal, 100);
+      // animate budget bar if switching to planners
+      if (target === 'planners') setTimeout(animateBudgetBar, 300);
+    });
+  });
+
+  // ── Scroll reveal
+  function triggerReveal() {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.tab-panel.active .reveal:not(.visible)').forEach(el => obs.observe(el));
+  }
+  triggerReveal();
+
+  // ── Budget bar animation
+  function animateBudgetBar() {
+    const bar = document.getElementById('budget-bar');
+    if (bar) bar.classList.add('animate');
+  }
+  // Animate on first load if planners is active
+  const budgetObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { animateBudgetBar(); budgetObs.disconnect(); } });
+  }, { threshold: 0.3 });
+  const budgetSection = document.getElementById('budget-section');
+  if (budgetSection) budgetObs.observe(budgetSection);
+</script>
+
+</body>
+</html>

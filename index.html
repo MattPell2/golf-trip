@@ -386,6 +386,75 @@
 
     .p-highlights { margin-top: 0.75rem; }
 
+    /* ─── SCENARIO BANNER ────────────────────────── */
+    .scenario-banner {
+      border: 1px solid var(--green-surface);
+      border-top: 3px solid var(--gold);
+      background: var(--green-dark);
+      padding: 2rem 2.5rem;
+    }
+    .scenario-pill {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+      padding: 0.3em 0.85em; border-radius: 20px; margin-bottom: 0.9rem;
+    }
+    .pill-confirmed { background: rgba(50,150,80,0.15); color: #7de0a0; border: 1px solid rgba(50,150,80,0.3); }
+    .pill-waitlist  { background: rgba(201,168,76,0.12); color: var(--gold-light); border: 1px solid var(--gold-dim); }
+    .scenario-banner-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 500; color: var(--cream); line-height: 1.15; margin-bottom: 0.5rem;
+    }
+    .scenario-banner-sub { font-size: 0.85rem; color: var(--cream-dim); line-height: 1.65; }
+
+    /* ─── SCHEDULE TIMELINE ───────────────────── */
+    .tl-list {
+      position: relative; list-style: none; padding-left: 0; margin: 0;
+    }
+    .tl-list::before {
+      content: '';
+      position: absolute; left: 72px; top: 6px; bottom: 8px; width: 1px;
+      background: linear-gradient(to bottom, var(--gold-dim) 0%, var(--gold-dim) 85%, transparent 100%);
+    }
+    .tl-item {
+      display: flex; align-items: flex-start; padding-bottom: 1.5rem; position: relative;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-tc {
+      width: 72px; flex-shrink: 0; text-align: right; padding-top: 3px;
+    }
+    .tl-time {
+      font-size: 0.68rem; font-weight: 600; color: var(--gold); letter-spacing: 0.05em;
+      white-space: nowrap; display: block; line-height: 1.3;
+    }
+    .tl-item.tl-drive .tl-time { color: var(--text-muted); }
+    .tl-item.tl-notime .tl-time { color: var(--green-muted); }
+    .tl-dc {
+      width: 26px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 5px;
+    }
+    .tl-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold-dim); border: 2px solid var(--green-deep); position: relative; z-index: 1;
+    }
+    .tl-item.tl-tee .tl-dot   { background: var(--gold); width: 11px; height: 11px; margin-top: -1px; }
+    .tl-item.tl-drive .tl-dot { background: var(--green-muted); }
+    .tl-bd { flex: 1; }
+    .tl-tag {
+      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 0.15rem;
+    }
+    .tl-item.tl-tee .tl-tag { color: var(--gold); }
+    .tl-item.tl-drive .tl-tag { display: none; }
+    .tl-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500;
+      color: var(--cream); line-height: 1.2;
+    }
+    .tl-item.tl-drive .tl-name {
+      font-family: 'Jost', sans-serif; font-size: 0.82rem; color: var(--text-muted);
+      font-style: italic; font-weight: 300;
+    }
+    .tl-sub { font-size: 0.78rem; color: var(--cream-dim); margin-top: 0.15rem; line-height: 1.55; }
+    .tl-sub.caution { color: var(--gold-dim); font-style: italic; }
+
     /* ─── RESPONSIVE ─────────────────────────────── */
     @media (max-width: 600px) {
       .day-header { flex-direction:column; gap:0.5rem; }
@@ -402,6 +471,14 @@
       .tab-btn { padding:1rem 1.2rem; font-size:0.65rem; letter-spacing:0.15em; }
       .p-landscape { height:200px; }
       .p-desc { padding:1rem 1.25rem; }
+      .tl-list::before { left: 56px; }
+      .tl-tc { width: 56px; }
+      .scenario-banner { padding: 1.5rem 1.25rem; }
+    }
+
+    /* Make tab nav scrollable when 4 tabs don't fit */
+    @media (max-width: 760px) {
+      .tab-nav { justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     }
   </style>
 </head>
@@ -432,6 +509,8 @@
 <nav class="tab-nav">
   <button class="tab-btn active" data-tab="planners">For the Planners</button>
   <button class="tab-btn"        data-tab="players">For the Players</button>
+  <button class="tab-btn"        data-tab="scenario1">Scenario 1 — Booked</button>
+  <button class="tab-btn"        data-tab="scenario2">Scenario 2 — Ideal</button>
 </nav>
 
 <!-- ══════════════════════════════════════════
@@ -827,6 +906,447 @@
     <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 100 Holes &nbsp;·&nbsp; 18 Players</p>
   </footer>
 </div><!-- end #tab-players -->
+
+
+<!-- ══════════════════════════════════════════
+     TAB: SCENARIO 1 — BOOKED TEE TIMES
+══════════════════════════════════════════ -->
+<div id="tab-scenario1" class="tab-panel">
+
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="scenario-banner reveal">
+        <span class="scenario-pill pill-confirmed">✓ Confirmed</span>
+        <h2 class="scenario-banner-title">Our Current Booked Tee Times</h2>
+        <p class="scenario-banner-sub">These are our locked-in bookings. Day 1 kicks off at Kohler before heading to Quit Qui Oc, Day 2 is The Bull followed by The Baths, and Day 3 is a David &amp; Goliath finish — Autumn Ridge in the morning, then Whistling Straits Irish to close it out. We're hoping to pull that final tee time back a few slots.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 1 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">01</div>
+        <div class="day-info">
+          <p class="day-label">July 9</p>
+          <h2 class="day-title">Blackwolf Meadows → Quit Qui Oc</h2>
+          <p class="day-subtitle">Kohler Sampler Platter</p>
+        </div>
+      </div>
+      <ul class="tl-list reveal">
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">6:30 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Blackwolf Run</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">7:10 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">Blackwolf Meadows Course</div>
+            <div class="tl-sub">Kohler, WI · Destination Kohler</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">12:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Lunch</span>
+            <div class="tl-name">Blackwolf Run Restaurant</div>
+          </div>
+        </li>
+        <li class="tl-item tl-drive">
+          <div class="tl-tc"><span class="tl-time">1:30 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <div class="tl-name">→ Depart Blackwolf · Drive to Quit Qui Oc (~30 min)</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">2:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Quit Qui Oc Golf Club</div>
+            <div class="tl-sub">Elkhart Lake, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">2:30 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">Quit Qui Oc Golf Club</div>
+            <div class="tl-sub">Elkhart Lake, WI · 18 holes</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">02</div>
+        <div class="day-info">
+          <p class="day-label">July 10</p>
+          <h2 class="day-title">The Bull → The Baths</h2>
+          <p class="day-subtitle">Challenge &amp; Recovery</p>
+        </div>
+      </div>
+      <ul class="tl-list reveal">
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">8:30 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">The Bull at Pinehurst Farms</div>
+            <div class="tl-sub">Sheboygan Falls, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">9:10 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">The Bull — Jack Nicklaus Signature</div>
+            <div class="tl-sub">18 holes · Sheboygan Falls, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-notime">
+          <div class="tl-tc"><span class="tl-time">—</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Lunch</span>
+            <div class="tl-name">The Bull Clubhouse</div>
+          </div>
+        </li>
+        <li class="tl-item tl-drive">
+          <div class="tl-tc"><span class="tl-time">~3:30 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <div class="tl-name">→ Drive to Blackwolf Run (~20 min)</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">4:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Blackwolf Run</div>
+            <div class="tl-sub">Kohler, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">5:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">The Baths at Blackwolf Run</div>
+            <div class="tl-sub">10-hole par-3 · Natural springs · Outdoor bar</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">03</div>
+        <div class="day-info">
+          <p class="day-label">July 11</p>
+          <h2 class="day-title">Autumn Ridge → Whistling Straits Irish</h2>
+          <p class="day-subtitle">David &amp; Goliath</p>
+        </div>
+      </div>
+      <ul class="tl-list reveal">
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">7:30 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Autumn Ridge Golf Club</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">8:00 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">Autumn Ridge Golf Club</div>
+            <div class="tl-sub">18 holes</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">1:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Lunch</span>
+            <div class="tl-name">Autumn Ridge Clubhouse</div>
+          </div>
+        </li>
+        <li class="tl-item tl-drive">
+          <div class="tl-tc"><span class="tl-time">2:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <div class="tl-name">→ Depart Autumn Ridge · Drive to Whistling Straits (~30 min)</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">2:30 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Whistling Straits</div>
+            <div class="tl-sub">Kohler, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">3:27 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">Whistling Straits — Irish Course</div>
+            <div class="tl-sub">Pete Dye · Links-inspired · Top 50 USA</div>
+            <div class="tl-sub caution">⊙ Hoping to pull this back a few tee times</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-crest">Wisconsin Golf Trip · Scenario 1</p>
+    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; Current Bookings</p>
+  </footer>
+</div><!-- end #tab-scenario1 -->
+
+
+<!-- ══════════════════════════════════════════
+     TAB: SCENARIO 2 — IDEAL TEE TIMES
+══════════════════════════════════════════ -->
+<div id="tab-scenario2" class="tab-panel">
+
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="scenario-banner reveal">
+        <span class="scenario-pill pill-waitlist">⏳ Waitlist — July 11 Morning</span>
+        <h2 class="scenario-banner-title">Ideal Tee Times</h2>
+        <p class="scenario-banner-sub">This is the dream schedule — pending getting off the waitlist for July 11 morning at Blackwolf. Day 1 is a full 36-hole day at Quit Qui Oc, Day 2 is The Bull followed by The Baths, and Day 3 finishes with Blackwolf River or Meadows in the morning then Whistling Straits Irish to close.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 1 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">01</div>
+        <div class="day-info">
+          <p class="day-label">July 9</p>
+          <h2 class="day-title">Quit Qui Oc — 36 Holes</h2>
+          <p class="day-subtitle">The Warm Up</p>
+        </div>
+      </div>
+      <ul class="tl-list reveal">
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">7:30 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Quit Qui Oc Golf Club</div>
+            <div class="tl-sub">Elkhart Lake, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">8:15 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time · Round 1</span>
+            <div class="tl-name">Quit Qui Oc Golf Club</div>
+            <div class="tl-sub">Elkhart Lake, WI · 18 holes</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">1:15 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Lunch</span>
+            <div class="tl-name">Quit Qui Oc Clubhouse</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">2:30 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time · Round 2</span>
+            <div class="tl-name">Quit Qui Oc Golf Club</div>
+            <div class="tl-sub">Elkhart Lake, WI · 18 holes · Back nine replay</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">02</div>
+        <div class="day-info">
+          <p class="day-label">July 10</p>
+          <h2 class="day-title">The Bull → The Baths</h2>
+          <p class="day-subtitle">Challenge &amp; Recovery</p>
+        </div>
+      </div>
+      <ul class="tl-list reveal">
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">8:30 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">The Bull at Pinehurst Farms</div>
+            <div class="tl-sub">Sheboygan Falls, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">9:10 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">The Bull — Jack Nicklaus Signature</div>
+            <div class="tl-sub">18 holes · Sheboygan Falls, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-notime">
+          <div class="tl-tc"><span class="tl-time">—</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Lunch</span>
+            <div class="tl-name">The Bull Clubhouse</div>
+          </div>
+        </li>
+        <li class="tl-item tl-drive">
+          <div class="tl-tc"><span class="tl-time">3:30 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <div class="tl-name">→ Depart The Bull · Drive to Blackwolf Run (~20 min)</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">4:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Blackwolf Run</div>
+            <div class="tl-sub">Kohler, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">5:00 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">The Baths at Blackwolf Run</div>
+            <div class="tl-sub">10-hole par-3 · Natural springs · Outdoor bar</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <hr class="section-divider" />
+  <section>
+    <div class="container">
+      <div class="day-header reveal">
+        <div class="day-number">03</div>
+        <div class="day-info">
+          <p class="day-label">July 11</p>
+          <h2 class="day-title">Blackwolf Run → Whistling Straits Irish</h2>
+          <p class="day-subtitle">The Grand Finale</p>
+        </div>
+      </div>
+      <div class="scenario-banner reveal" style="margin-bottom:2rem; border-top-color: var(--gold-dim);">
+        <span class="scenario-pill pill-waitlist">⏳ Waitlist Pending — Morning Round</span>
+        <p class="scenario-banner-sub" style="margin-top:0.25rem;">Waiting to get off the waitlist for Blackwolf River or Meadows in the morning. Once confirmed, this is the itinerary.</p>
+      </div>
+      <ul class="tl-list reveal">
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">7:00 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Blackwolf Run</div>
+            <div class="tl-sub">Kohler, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">8:00 AM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">Blackwolf Run — River or Meadows</div>
+            <div class="tl-sub">Kohler, WI · 18 holes · Pete Dye design</div>
+          </div>
+        </li>
+        <li class="tl-item tl-notime">
+          <div class="tl-tc"><span class="tl-time">—</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Lunch</span>
+            <div class="tl-name">Blackwolf Run Restaurant</div>
+          </div>
+        </li>
+        <li class="tl-item tl-drive">
+          <div class="tl-tc"><span class="tl-time">2:15 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <div class="tl-name">→ Depart Blackwolf · Drive to Whistling Straits (~30 min)</div>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-tc"><span class="tl-time">2:45 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Arrive</span>
+            <div class="tl-name">Whistling Straits</div>
+            <div class="tl-sub">Kohler, WI</div>
+          </div>
+        </li>
+        <li class="tl-item tl-tee">
+          <div class="tl-tc"><span class="tl-time">3:15 PM</span></div>
+          <div class="tl-dc"><div class="tl-dot"></div></div>
+          <div class="tl-bd">
+            <span class="tl-tag">Tee Time</span>
+            <div class="tl-name">Whistling Straits — Irish Course</div>
+            <div class="tl-sub">Pete Dye · Links-inspired · Top 50 USA · The Grand Finale</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-crest">Wisconsin Golf Trip · Scenario 2</p>
+    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; Dream Schedule</p>
+  </footer>
+</div><!-- end #tab-scenario2 -->
 
 
 <script>

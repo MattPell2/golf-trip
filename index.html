@@ -303,26 +303,65 @@
     .p-course-card .p-desc { border-radius:0 0 4px 4px; }
 
     /* ─── RESPONSIVE ─────────────────────────────── */
-    @media (max-width: 600px) {
-      .day-header { flex-direction:column; gap:0.5rem; }
-      .day-number { font-size:3rem; }
-      .day-info { border-left:none; border-top:1px solid var(--gold-dim); padding-left:0; padding-top:0.75rem; }
-      .course-card { padding:1.25rem; }
-      .summary-section { padding:2rem 1.25rem; }
-      .per-person-box { flex-direction:column; gap:0.5rem; }
-      .hero-title { font-size:clamp(3rem,14vw,6rem); }
-      .p-stats { grid-template-columns:repeat(2,1fr); }
-      .p-stat:nth-child(2) { border-right:none; }
-      .p-stat:nth-child(3) { border-top:1px solid var(--green-surface); }
-      .p-stat:nth-child(4) { border-top:1px solid var(--green-surface); }
-      .p-landscape { height:200px; }
-      .p-desc { padding:1rem 1.25rem; }
-    }
+    html { overflow-x: hidden; } /* prevent hero hills from causing horizontal scroll */
+
     @media (max-width: 760px) {
-      .tab-nav { justify-content:flex-start; overflow-x:auto; -webkit-overflow-scrolling:touch; }
-      .sub-tab-nav { justify-content:flex-start; overflow-x:auto; }
-      .tab-btn { padding:1rem 1.4rem; font-size:0.65rem; letter-spacing:0.15em; }
-      .sub-tab-btn { padding:0.85rem 1.2rem; font-size:0.62rem; }
+      /* Top-level tab nav scrolls (long scenario names) */
+      .tab-nav { justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .tab-btn { padding: 1rem 1.4rem; font-size: 0.65rem; letter-spacing: 0.15em; }
+      /* Sub-tab nav only has 2 short tabs — center them */
+      .sub-tab-nav { justify-content: center; }
+      .sub-tab-btn { flex: 1; text-align: center; font-size: 0.62rem; padding: 0.85rem 1rem; }
+    }
+
+    @media (max-width: 600px) {
+      /* Tighten vertical rhythm */
+      section { padding: 2.5rem 0; }
+
+      /* Hero */
+      .hero-title { font-size: clamp(3rem, 14vw, 6rem); }
+      .hero-tagline { letter-spacing: 0.1em; font-size: 0.78rem; }
+      .hero-rule { margin: 1.25rem auto; }
+
+      /* Day headers */
+      .day-header { flex-direction: column; gap: 0.5rem; }
+      .day-number { font-size: 3rem; }
+      .day-info { border-left: none; border-top: 1px solid var(--gold-dim); padding-left: 0; padding-top: 0.75rem; }
+
+      /* Course cards */
+      .course-card { padding: 1.25rem; }
+      .course-top { flex-direction: column; gap: 0.4rem; }
+      .course-badge { align-self: flex-start; margin-top: 0; }
+      .course-desc { font-size: 0.84rem; }
+
+      /* Cost table — hide middle "Calculation" column, too cramped on mobile */
+      .cost-table th:nth-child(2),
+      .cost-table td:nth-child(2) { display: none; }
+      .cost-table { font-size: 0.78rem; }
+
+      /* Drive connector */
+      .drive-badge { white-space: normal; text-align: center; line-height: 1.4; }
+
+      /* Budget summary */
+      .summary-section { padding: 2rem 1.25rem; }
+      .summary-row { flex-wrap: wrap; gap: 0.25rem; }
+      .summary-row-amount { font-size: 1.1rem; }
+      .summary-row.grand .summary-row-amount { font-size: 1.5rem; }
+      .per-person-box { flex-direction: column; gap: 0.5rem; }
+      .per-person-amount { font-size: 1.8rem; }
+
+      /* Players cards */
+      .p-landscape { height: 200px; }
+      .p-landscape-overlay { padding: 1rem 1.25rem; }
+      .p-course-name { font-size: 1.4rem; }
+      .p-stats { grid-template-columns: repeat(2, 1fr); }
+      .p-stat:nth-child(2) { border-right: none; }
+      .p-stat:nth-child(3) { border-top: 1px solid var(--green-surface); }
+      .p-stat:nth-child(4) { border-top: 1px solid var(--green-surface); }
+      .p-desc { padding: 1rem 1.25rem; font-size: 0.84rem; }
+
+      /* FAQ grid */
+      .faq-card { padding: 1.5rem 1.25rem; }
     }
   </style>
 </head>

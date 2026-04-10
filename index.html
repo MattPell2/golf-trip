@@ -96,7 +96,7 @@
     @keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:0.6} 50%{transform:scaleY(1.3);opacity:1} }
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ─── TABS ──────────────────────────────────── */
+    /* ─── TOP TABS ──────────────────────────────────── */
     .tab-nav {
       position: sticky;
       top: 0;
@@ -126,14 +126,40 @@
       white-space: nowrap;
     }
     .tab-btn:hover { color: var(--cream-dim); }
-    .tab-btn.active {
-      color: var(--gold);
-      border-bottom-color: var(--gold);
-    }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-    /* tab panels */
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
+
+    /* ─── SUB TABS ──────────────────────────────────── */
+    .sub-tab-nav {
+      background: var(--green-dark);
+      border-bottom: 1px solid var(--green-surface);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      padding: 0;
+    }
+    .sub-tab-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.9rem 2.2rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .sub-tab-btn:hover { color: var(--cream-dim); }
+    .sub-tab-btn.active { color: var(--gold-light); border-bottom-color: var(--gold-light); }
+
+    .sub-tab-panel { display: none; }
+    .sub-tab-panel.active { display: block; }
 
     /* ─── SHARED LAYOUT ─────────────────────────── */
     .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
@@ -162,6 +188,7 @@
     .course-card::before {
       content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--gold);
     }
+    .course-card.estimated::before { background: var(--gold-dim); }
     .course-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
     .course-name { font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,4vw,1.8rem); font-weight:500; color:var(--cream); line-height:1.2; }
     .course-badge {
@@ -169,6 +196,8 @@
       color:var(--green-deep); background:var(--gold); padding:0.25em 0.7em;
       border-radius:2px; white-space:nowrap; flex-shrink:0; margin-top:0.3rem;
     }
+    .course-badge.est { background: var(--gold-dim); color: var(--cream); }
+    .course-badge.waitlist { background: transparent; color: var(--gold-light); border: 1px solid var(--gold-dim); }
     .course-desc { font-size:0.9rem; color:var(--cream-dim); margin-bottom:1.5rem; line-height:1.65; }
     .course-meta { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:0.5rem 2rem; margin-bottom:1.5rem; }
     .meta-item { display:flex; align-items:flex-start; gap:0.6rem; font-size:0.8rem; }
@@ -188,6 +217,7 @@
     .cost-table tr.total td { border-top:1px solid var(--gold-dim); border-bottom:none; color:var(--gold-light); font-weight:500; padding-top:0.75rem; }
     .cost-per-person { font-size:0.72rem; color:var(--text-muted); text-align:right; margin-top:0.4rem; }
     .cost-per-person strong { color:var(--gold); }
+    .est-note { font-size:0.7rem; color:var(--gold-dim); font-style:italic; margin-top:0.5rem; }
 
     /* ─── DRIVE CONNECTOR ───────────────────────── */
     .drive-connector { display:flex; align-items:center; gap:1rem; padding:1.2rem 0; color:var(--text-muted); font-size:0.78rem; letter-spacing:0.1em; }
@@ -215,7 +245,6 @@
     .budget-meter-labels { display:flex; justify-content:space-between; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.6rem; }
     .budget-meter { height:6px; background:var(--green-surface); border-radius:3px; overflow:hidden; }
     .budget-bar { height:100%; width:0; background:linear-gradient(to right,var(--gold-dim),var(--gold)); border-radius:3px; transition:width 1.5s 0.3s ease-out; }
-    .budget-bar.animate { width:93.97%; }
     .budget-remaining-note { text-align:right; font-size:0.75rem; color:var(--gold-dim); margin-top:0.5rem; }
     .budget-remaining-note strong { color:var(--gold); }
     .per-person-box { background:var(--green-surface); border-left:3px solid var(--gold); padding:1.25rem 1.5rem; margin-top:2rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
@@ -242,218 +271,36 @@
     /* ══════════════════════════════════════════════
        PLAYERS TAB STYLES
     ══════════════════════════════════════════════ */
+    .p-course-card { position:relative; border-radius:4px; overflow:hidden; margin-bottom:0; }
+    .p-landscape { position:relative; height:300px; overflow:hidden; }
 
-    /* Course visual card */
-    .p-course-card {
-      position: relative;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 0;
-    }
-
-    /* CSS landscape "photo" */
-    .p-landscape {
-      position: relative;
-      height: 300px;
-      overflow: hidden;
-    }
-
-    /* Real course photos */
-    .landscape-quitquioc { background: url('golf-trip-images/quitquioc_new.jpg') center center / cover no-repeat; }
-    .landscape-bull      { background: url('golf-trip-images/thebull.jpg') center center / cover no-repeat; }
-    .landscape-baths     { background: url('golf-trip-images/thebaths.jpg') center center / cover no-repeat; }
-    .landscape-irish     { background: url('golf-trip-images/irish.jpg') center center / cover no-repeat; }
-    .landscape-river     { background: url('golf-trip-images/rivercourse.jpg') center center / cover no-repeat; }
-
-    /* Gradient overlay so text stays readable */
-    .p-landscape::before,
-    .p-landscape::after { content: ''; position: absolute; }
+    .landscape-quitquioc    { background: url('golf-trip-images/quitquioc_new.jpg') center center / cover no-repeat; }
+    .landscape-bull         { background: url('golf-trip-images/thebull.jpg') center center / cover no-repeat; }
+    .landscape-baths        { background: url('golf-trip-images/thebaths.jpg') center center / cover no-repeat; }
+    .landscape-irish        { background: url('golf-trip-images/irish.jpg') center center / cover no-repeat; }
+    .landscape-river        { background: url('golf-trip-images/rivercourse.jpg') center center / cover no-repeat; }
+    .landscape-meadows      { background: url('golf-trip-images/meadowvalleyes.jpg') center center / cover no-repeat; }
+    .landscape-autumnridge  { background: url('golf-trip-images/autumnridge.jpg') center center / cover no-repeat; }
 
     .p-landscape::before {
-      inset: 0;
+      content: ''; position:absolute; inset:0;
       background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.65) 100%);
     }
-    .p-landscape::after { display: none; }
+    .p-landscape::after { display:none; }
+    .p-landscape-overlay { position:absolute; bottom:0; left:0; right:0; padding:1.5rem 2rem 1.25rem; z-index:2; }
+    .p-course-name { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,4vw,2rem); font-weight:500; color:var(--cream); line-height:1.15; text-shadow:0 2px 12px rgba(0,0,0,0.6); margin-bottom:0.3rem; }
+    .p-course-badge { display:inline-block; font-size:0.6rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--green-deep); background:var(--gold); padding:0.2em 0.65em; border-radius:2px; }
+    .p-course-badge.waitlist { background: transparent; color: var(--gold-light); border: 1px solid var(--gold-light); }
 
-    /* Text overlay on landscape */
-    .p-landscape-overlay {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 1.5rem 2rem 1.25rem;
-      z-index: 2;
-    }
-
-    .p-course-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      font-weight: 500;
-      color: var(--cream);
-      line-height: 1.15;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-      margin-bottom: 0.3rem;
-    }
-
-    .p-course-badge {
-      display: inline-block;
-      font-size: 0.6rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--green-deep);
-      background: var(--gold);
-      padding: 0.2em 0.65em;
-      border-radius: 2px;
-    }
-
-    /* Stats strip */
-    .p-stats {
-      background: var(--green-dark);
-      border: 1px solid var(--green-surface);
-      border-top: none;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-radius: 0 0 4px 4px;
-    }
-
-    .p-stat {
-      padding: 1rem 0.75rem;
-      text-align: center;
-      border-right: 1px solid var(--green-surface);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .p-stat:last-child { border-right: none; }
-
-    .p-stat-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 500;
-      color: var(--gold-light);
-      line-height: 1;
-      margin-bottom: 0.2rem;
-    }
-    .p-stat-value.sm {
-      font-size: 0.95rem;
-      line-height: 1.25;
-    }
-
-    .p-stat-label {
-      font-size: 0.6rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    /* Description under stats */
-    .p-desc {
-      background: var(--green-dark);
-      border: 1px solid var(--green-surface);
-      border-top: none;
-      padding: 1.25rem 2rem 1.5rem;
-      border-radius: 0 0 4px 4px;
-      font-size: 0.88rem;
-      color: var(--cream-dim);
-      line-height: 1.7;
-    }
-
-    /* When stats + desc are both present, only last gets bottom radius */
-    .p-course-card .p-stats {
-      border-radius: 0;
-    }
-    .p-course-card .p-desc {
-      border-radius: 0 0 4px 4px;
-    }
-
-    /* Highlight pill for exceptional stats */
-    .p-highlight {
-      display: inline-block;
-      background: rgba(201,168,76,0.12);
-      border: 1px solid var(--gold-dim);
-      color: var(--gold-light);
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.3em 0.8em;
-      border-radius: 20px;
-      margin-right: 0.4rem;
-      margin-top: 0.5rem;
-      display: inline-block;
-    }
-
-    .p-highlights { margin-top: 0.75rem; }
-
-    /* ─── SCENARIO BANNER ────────────────────────── */
-    .scenario-banner {
-      border: 1px solid var(--green-surface);
-      border-top: 3px solid var(--gold);
-      background: var(--green-dark);
-      padding: 2rem 2.5rem;
-    }
-    .scenario-pill {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
-      padding: 0.3em 0.85em; border-radius: 20px; margin-bottom: 0.9rem;
-    }
-    .pill-confirmed { background: rgba(50,150,80,0.15); color: #7de0a0; border: 1px solid rgba(50,150,80,0.3); }
-    .pill-waitlist  { background: rgba(201,168,76,0.12); color: var(--gold-light); border: 1px solid var(--gold-dim); }
-    .scenario-banner-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 500; color: var(--cream); line-height: 1.15; margin-bottom: 0.5rem;
-    }
-    .scenario-banner-sub { font-size: 0.85rem; color: var(--cream-dim); line-height: 1.65; }
-
-    /* ─── SCHEDULE TIMELINE ───────────────────── */
-    .tl-list {
-      position: relative; list-style: none; padding-left: 0; margin: 0;
-    }
-    .tl-list::before {
-      content: '';
-      position: absolute; left: 72px; top: 6px; bottom: 8px; width: 1px;
-      background: linear-gradient(to bottom, var(--gold-dim) 0%, var(--gold-dim) 85%, transparent 100%);
-    }
-    .tl-item {
-      display: flex; align-items: flex-start; padding-bottom: 1.5rem; position: relative;
-    }
-    .tl-item:last-child { padding-bottom: 0; }
-    .tl-tc {
-      width: 72px; flex-shrink: 0; text-align: right; padding-top: 3px;
-    }
-    .tl-time {
-      font-size: 0.68rem; font-weight: 600; color: var(--gold); letter-spacing: 0.05em;
-      white-space: nowrap; display: block; line-height: 1.3;
-    }
-    .tl-item.tl-drive .tl-time { color: var(--text-muted); }
-    .tl-item.tl-notime .tl-time { color: var(--green-muted); }
-    .tl-dc {
-      width: 26px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 5px;
-    }
-    .tl-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--gold-dim); border: 2px solid var(--green-deep); position: relative; z-index: 1;
-    }
-    .tl-item.tl-tee .tl-dot   { background: var(--gold); width: 11px; height: 11px; margin-top: -1px; }
-    .tl-item.tl-drive .tl-dot { background: var(--green-muted); }
-    .tl-bd { flex: 1; }
-    .tl-tag {
-      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--text-muted); display: block; margin-bottom: 0.15rem;
-    }
-    .tl-item.tl-tee .tl-tag { color: var(--gold); }
-    .tl-item.tl-drive .tl-tag { display: none; }
-    .tl-name {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 500;
-      color: var(--cream); line-height: 1.2;
-    }
-    .tl-item.tl-drive .tl-name {
-      font-family: 'Jost', sans-serif; font-size: 0.82rem; color: var(--text-muted);
-      font-style: italic; font-weight: 300;
-    }
-    .tl-sub { font-size: 0.78rem; color: var(--cream-dim); margin-top: 0.15rem; line-height: 1.55; }
-    .tl-sub.caution { color: var(--gold-dim); font-style: italic; }
+    .p-stats { background:var(--green-dark); border:1px solid var(--green-surface); border-top:none; display:grid; grid-template-columns:repeat(4,1fr); border-radius:0; }
+    .p-stat { padding:1rem 0.75rem; text-align:center; border-right:1px solid var(--green-surface); display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .p-stat:last-child { border-right:none; }
+    .p-stat-value { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:500; color:var(--gold-light); line-height:1; margin-bottom:0.2rem; }
+    .p-stat-value.sm { font-size:0.95rem; line-height:1.25; }
+    .p-stat-label { font-size:0.6rem; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-muted); }
+    .p-desc { background:var(--green-dark); border:1px solid var(--green-surface); border-top:none; padding:1.25rem 2rem 1.5rem; border-radius:0 0 4px 4px; font-size:0.88rem; color:var(--cream-dim); line-height:1.7; }
+    .p-course-card .p-stats { border-radius:0; }
+    .p-course-card .p-desc { border-radius:0 0 4px 4px; }
 
     /* ─── RESPONSIVE ─────────────────────────────── */
     @media (max-width: 600px) {
@@ -464,27 +311,24 @@
       .summary-section { padding:2rem 1.25rem; }
       .per-person-box { flex-direction:column; gap:0.5rem; }
       .hero-title { font-size:clamp(3rem,14vw,6rem); }
-      .p-stats { grid-template-columns: repeat(2,1fr); }
+      .p-stats { grid-template-columns:repeat(2,1fr); }
       .p-stat:nth-child(2) { border-right:none; }
       .p-stat:nth-child(3) { border-top:1px solid var(--green-surface); }
       .p-stat:nth-child(4) { border-top:1px solid var(--green-surface); }
-      .tab-btn { padding:1rem 1.2rem; font-size:0.65rem; letter-spacing:0.15em; }
       .p-landscape { height:200px; }
       .p-desc { padding:1rem 1.25rem; }
-      .tl-list::before { left: 56px; }
-      .tl-tc { width: 56px; }
-      .scenario-banner { padding: 1.5rem 1.25rem; }
     }
-
-    /* Make tab nav scrollable when 4 tabs don't fit */
     @media (max-width: 760px) {
-      .tab-nav { justify-content: flex-start; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .tab-nav { justify-content:flex-start; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+      .sub-tab-nav { justify-content:flex-start; overflow-x:auto; }
+      .tab-btn { padding:1rem 1.4rem; font-size:0.65rem; letter-spacing:0.15em; }
+      .sub-tab-btn { padding:0.85rem 1.2rem; font-size:0.62rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- HERO (shared) -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hills" aria-hidden="true">
@@ -494,10 +338,10 @@
     <div class="hill hill-4"></div>
   </div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Wisconsin &nbsp;·&nbsp; Group Itinerary</p>
+    <p class="hero-eyebrow">Wisconsin &nbsp;·&nbsp; July 2026</p>
     <h1 class="hero-title">Golf<br><span>Trip</span></h1>
     <div class="hero-rule"></div>
-    <p class="hero-tagline">3 Days<span class="sep">·</span>5 Courses<span class="sep">·</span>100 Holes</p>
+    <p class="hero-tagline">3 Days<span class="sep">·</span>5 Courses<span class="sep">·</span>18 Golfers</p>
   </div>
   <div class="hero-scroll" aria-hidden="true">
     <span>Scroll</span>
@@ -505,866 +349,853 @@
   </div>
 </section>
 
-<!-- TAB NAV -->
+<!-- TOP TAB NAV -->
 <nav class="tab-nav">
-  <button class="tab-btn active" data-tab="planners">For the Planners</button>
-  <button class="tab-btn"        data-tab="players">For the Players</button>
-  <button class="tab-btn"        data-tab="scenario1">Scenario 1 — Booked</button>
+  <button class="tab-btn active" data-tab="scenario1">Scenario 1 — Booked</button>
   <button class="tab-btn"        data-tab="scenario2">Scenario 2 — Ideal</button>
 </nav>
 
+
 <!-- ══════════════════════════════════════════
-     TAB: FOR THE PLANNERS
+     SCENARIO 1 — BOOKED TEE TIMES
 ══════════════════════════════════════════ -->
-<div id="tab-planners" class="tab-panel active">
+<div id="tab-scenario1" class="tab-panel active">
 
-  <!-- DAY 1 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">01</div>
-        <div class="day-info">
-          <p class="day-label">Day One</p>
-          <h2 class="day-title">Quit Qui Oc Golf Club</h2>
-          <p class="day-subtitle">The Warm-Up</p>
-        </div>
-      </div>
-      <div class="course-card reveal">
-        <div class="course-top">
-          <div class="course-name">Quit Qui Oc Golf Club</div>
-          <span class="course-badge">27-hole Facility · 36 holes played</span>
-        </div>
-        <p class="course-desc">Start with an approachable, fun course to get back in the swing. Perfect for anyone shaking off the rust. Beautiful rolling terrain, friendly vibes — you'll build confidence before tackling the heavier courses ahead. Three distinct 9-hole courses keep it fresh all day: Original 18 + Glacial 9 + 9 replay.</p>
-        <div class="course-meta">
-          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">500 Quit Qui Oc Lane<br>Elkhart Lake, WI 53020</span></div></div>
-          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 876-2833</span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.quitquiocgolf.com" target="_blank">quitquiocgolf.com</a></span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Drive</span><span class="meta-value">~25 min each way</span></div></div>
-        </div>
-        <table class="cost-table">
-          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
-          <tbody>
-            <tr><td>Green Fees</td><td class="cost-calc">$75 × 18 players × 2 rounds</td><td class="cost-amount">$2,700</td></tr>
-            <tr><td>Cart Rental</td><td class="cost-calc">$25 × 18 players × 2 rounds</td><td class="cost-amount">$900</td></tr>
-            <tr class="total"><td colspan="2"><strong>Day 1 Total</strong></td><td class="cost-amount"><strong>$3,600</strong></td></tr>
-          </tbody>
-        </table>
-        <p class="cost-per-person">Per person (18 players): <strong>$200.00</strong></p>
-      </div>
-    </div>
-  </section>
+  <nav class="sub-tab-nav">
+    <button class="sub-tab-btn active" data-subtab="s1-planners">For the Planners</button>
+    <button class="sub-tab-btn"        data-subtab="s1-players">For the Players</button>
+  </nav>
 
-  <!-- DAY 2 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">02</div>
-        <div class="day-info">
-          <p class="day-label">Day Two</p>
-          <h2 class="day-title">The Bull → The Baths</h2>
-          <p class="day-subtitle">The Challenge → The Recovery</p>
-        </div>
-      </div>
-      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
-      <div class="course-card reveal">
-        <div class="course-top">
-          <div class="course-name">The Bull at Pinehurst Farms</div>
-          <span class="course-badge">Jack Nicklaus Signature · 18 holes</span>
-        </div>
-        <p class="course-desc">Jack Nicklaus's most demanding design. Dramatic elevation changes, strategic bunkering — every shot matters. This is the test that separates your best golf from your average round.</p>
-        <div class="course-meta">
-          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">9425 Highway 32<br>Sheboygan Falls, WI 53085</span></div></div>
-          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 467-1500</span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.golfthebull.com" target="_blank">golfthebull.com</a></span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Drive from AirBnB</span><span class="meta-value">~15 min</span></div></div>
-        </div>
-        <table class="cost-table">
-          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
-          <tbody>
-            <tr><td>Green Fees</td><td class="cost-calc">$200 × 18 players</td><td class="cost-amount">$3,600</td></tr>
-            <tr><td>Cart Rental</td><td class="cost-calc">$10 × 18 players</td><td class="cost-amount">$180</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="drive-connector reveal">
-        <div class="drive-line"></div>
-        <div class="drive-badge"><span class="drive-arrow">→</span>Drive to The Baths &nbsp;~20 min</div>
-        <div class="drive-line"></div>
-      </div>
-      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
-      <div class="course-card reveal">
-        <div class="course-top">
-          <div class="course-name">The Baths at Blackwolf Run</div>
-          <span class="course-badge">Par-3 · 10 holes · Hot Springs</span>
-        </div>
-        <p class="course-desc">Reset with a stunning 10-hole par-3. Chase holes-in-one, bet on the 1-acre putting green, enjoy drinks at the outdoor bar, and dip your toes in the natural hot springs. The perfect afternoon unwind.</p>
-        <div class="course-meta">
-          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
-          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Return to AirBnB</span><span class="meta-value">~25 min</span></div></div>
-        </div>
-        <table class="cost-table">
-          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
-          <tbody>
-            <tr><td>Green Fees</td><td class="cost-calc">$150 × 18 players</td><td class="cost-amount">$2,700</td></tr>
-            <tr><td>Cart / Walk</td><td class="cost-calc">$20 × 18 players</td><td class="cost-amount">$360</td></tr>
-            <tr class="total"><td colspan="2"><strong>Day 2 Total</strong></td><td class="cost-amount"><strong>$6,890</strong></td></tr>
-          </tbody>
-        </table>
-        <p class="cost-per-person">Per person (18 players): <strong>$382.78</strong></p>
-      </div>
-    </div>
-  </section>
+  <!-- ── S1 PLANNERS ── -->
+  <div id="subtab-s1-planners" class="sub-tab-panel active">
 
-  <!-- DAY 3 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">03</div>
-        <div class="day-info">
-          <p class="day-label">Day Three</p>
-          <h2 class="day-title">Irish → River Course</h2>
-          <p class="day-subtitle">The Grand Finale</p>
+    <!-- DAY 1 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">01</div>
+          <div class="day-info">
+            <p class="day-label">July 9</p>
+            <h2 class="day-title">Blackwolf Meadows → Quit Qui Oc</h2>
+            <p class="day-subtitle">Kohler Sampler Platter</p>
+          </div>
         </div>
-      </div>
-      <p class="course-desc reveal" style="margin-bottom:2rem;">Two of the top 50 courses in the country. Both Pete Dye masterpieces. Both championship-caliber. The trip ends on the most beautiful courses known to man.</p>
-      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
-      <div class="course-card reveal">
-        <div class="course-top">
-          <div class="course-name">Whistling Straits — Irish Course</div>
-          <span class="course-badge">Pete Dye · Links-Inspired · 18 holes</span>
-        </div>
-        <p class="course-desc">Authentic links-inspired design without the soul-crushing difficulty of The Straits. Everything great about Whistling Straits — the drama, the beauty, the strategy — without the pain. Top 50 in the country.</p>
-        <div class="course-meta">
-          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
-          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Drive from AirBnB</span><span class="meta-value">~20 min</span></div></div>
-        </div>
-        <table class="cost-table">
-          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
-          <tbody>
-            <tr><td>Green Fees</td><td class="cost-calc">$350 × 18 players</td><td class="cost-amount">$6,300</td></tr>
-            <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
-            <tr><td>Caddies / Tips</td><td class="cost-calc">$100 × 18 players</td><td class="cost-amount">$1,800</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="drive-connector reveal">
-        <div class="drive-line"></div>
-        <div class="drive-badge"><span class="drive-arrow">→</span>Drive to River Course &nbsp;~10 min</div>
-        <div class="drive-line"></div>
-      </div>
-      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
-      <div class="course-card reveal">
-        <div class="course-top">
-          <div class="course-name">Blackwolf Run — River Course</div>
-          <span class="course-badge">Pete Dye Championship · 18 holes</span>
-        </div>
-        <p class="course-desc">Pure golf architecture poetry. River Course is a masterpiece of design — dramatic, beautiful, and relentlessly compelling. Finishing the trip on one of the most celebrated courses in the country.</p>
-        <div class="course-meta">
-          <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
-          <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
-          <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Return to AirBnB</span><span class="meta-value">~20 min</span></div></div>
-        </div>
-        <table class="cost-table">
-          <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
-          <tbody>
-            <tr><td>Green Fees</td><td class="cost-calc">$400 × 18 players</td><td class="cost-amount">$7,200</td></tr>
-            <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
-            <tr><td>Caddies / Tips</td><td class="cost-calc">$100 × 18 players</td><td class="cost-amount">$1,800</td></tr>
-            <tr class="total"><td colspan="2"><strong>Day 3 Total</strong></td><td class="cost-amount"><strong>$17,700</strong></td></tr>
-          </tbody>
-        </table>
-        <p class="cost-per-person">Per person (18 players): <strong>$983.33</strong></p>
-      </div>
-    </div>
-  </section>
 
-  <!-- BUDGET SUMMARY -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="summary-section reveal" id="budget-section">
-        <h2 class="summary-title">Trip Summary</h2>
-        <p class="summary-subtitle">Full Cost Breakdown · 18 Players</p>
-        <div class="summary-rows">
-          <div class="summary-row"><div><span class="summary-row-label">Day 1 — Quit Qui Oc</span><span class="summary-row-sub">36 holes · $200 / person</span></div><span class="summary-row-amount">$3,600</span></div>
-          <div class="summary-row"><div><span class="summary-row-label">Day 2 — The Bull + The Baths</span><span class="summary-row-sub">28 holes · $383 / person</span></div><span class="summary-row-amount">$6,890</span></div>
-          <div class="summary-row"><div><span class="summary-row-label">Day 3 — Irish + River</span><span class="summary-row-sub">36 holes · $983 / person</span></div><span class="summary-row-amount">$17,700</span></div>
-          <div class="summary-row"><div><span class="summary-row-label">Total Golf</span><span class="summary-row-sub">100 holes across 5 courses</span></div><span class="summary-row-amount">$28,190</span></div>
-          <div class="summary-row"><div><span class="summary-row-label">Budget Remaining</span><span class="summary-row-sub">For lodging, food, etc.</span></div><span class="summary-row-amount" style="color:var(--gold)">$1,810</span></div>
-          <div class="summary-row grand"><div><span class="summary-row-label">Total Budget</span></div><span class="summary-row-amount">$30,000</span></div>
+        <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+        <div class="course-card estimated reveal">
+          <div class="course-top">
+            <div class="course-name">Blackwolf Run — Meadow Valleys</div>
+            <span class="course-badge est">Pete Dye · Est. Pricing</span>
+          </div>
+          <p class="course-desc">Pete Dye's rolling prairie masterpiece at Destination Kohler. Open heathland, oak savannahs, and dramatic glacier-carved terrain. The Meadow Valleys course is the more forgiving of the two Blackwolf courses — wide fairways with beautiful views across the Kohler landscape. The perfect way to open the trip with a taste of what Kohler is all about.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">1111 W. Riverside Drive<br>Kohler, WI 53044</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf/blackwolf-run/the-meadow-valleys" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">7:10 AM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees (caddie incl.)</td><td class="cost-calc">$295 × 18 players</td><td class="cost-amount">$5,310</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
+            </tbody>
+          </table>
+          <p class="est-note">⚑ Pricing estimated — confirm with Destination Kohler at (866) 847-4856</p>
         </div>
-        <div class="budget-meter-wrap">
-          <div class="budget-meter-labels"><span>Golf spend — 93.97%</span><span>Remaining — 6.03%</span></div>
-          <div class="budget-meter"><div class="budget-bar" id="budget-bar"></div></div>
-          <p class="budget-remaining-note"><strong>$1,810</strong> remaining for lodging &amp; everything else</p>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Drive to Quit Qui Oc &nbsp;~30 min</div>
+          <div class="drive-line"></div>
         </div>
-        <div class="per-person-box">
-          <div><p class="per-person-label">Total per person</p><p class="per-person-note">Golf only · 18 players · 100 holes</p></div>
-          <div class="per-person-amount">$1,566</div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">Quit Qui Oc Golf Club</div>
+            <span class="course-badge">27-hole Facility · 18 holes</span>
+          </div>
+          <p class="course-desc">A welcoming, fun course to round out the day. Beautiful rolling terrain, friendly greens, and a great on-site restaurant. After the challenge of Meadow Valleys in the morning, Quit Qui Oc is the perfect wind-down afternoon round.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">500 Quit Qui Oc Lane<br>Elkhart Lake, WI 53020</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 876-2833</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.quitquiocgolf.com" target="_blank">quitquiocgolf.com</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">2:30 PM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$75 × 18 players</td><td class="cost-amount">$1,350</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$25 × 18 players</td><td class="cost-amount">$450</td></tr>
+              <tr class="total"><td colspan="2"><strong>Day 1 Total</strong></td><td class="cost-amount"><strong>~$8,010</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="cost-per-person">Per person (18 players): <strong>~$445</strong></p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FAQ -->
-  <section>
-    <div class="container">
-      <div class="faq-grid">
-        <div class="faq-card reveal"><span class="faq-icon">⛳</span><h3 class="faq-title">Why Not The Straits Course?</h3><p class="faq-body">$750 per round, walking-only, 7,790 yards of unrelenting links golf. That's a solo mission, not a group vibe. We're here to maximize fun, not suffer through one brutal round. The Irish Course gives you everything great about Whistling Straits without the pain.</p></div>
-        <div class="faq-card reveal"><span class="faq-icon">🎯</span><h3 class="faq-title">100 Holes</h3><p class="faq-body">Playing 100 holes instead of 108 means we're leaving shots on the table. I want to see 8% more effort per hole. That means focus, strategy, and treating every shot like it matters. You've got 100 holes to showcase your best golf across 5 completely different courses. Make them count.</p></div>
+    <!-- DAY 2 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">02</div>
+          <div class="day-info">
+            <p class="day-label">July 10</p>
+            <h2 class="day-title">The Bull → The Baths</h2>
+            <p class="day-subtitle">Challenge &amp; Recovery</p>
+          </div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">The Bull at Pinehurst Farms</div>
+            <span class="course-badge">Jack Nicklaus Signature · 18 holes</span>
+          </div>
+          <p class="course-desc">Jack Nicklaus's most demanding design. Dramatic elevation changes, strategic bunkering — every shot matters. This is the test that separates your best golf from your average round.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">9425 Highway 32<br>Sheboygan Falls, WI 53085</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 467-1500</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.golfthebull.com" target="_blank">golfthebull.com</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">9:10 AM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$200 × 18 players</td><td class="cost-amount">$3,600</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$10 × 18 players</td><td class="cost-amount">$180</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Drive to The Baths &nbsp;~20 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">The Baths at Blackwolf Run</div>
+            <span class="course-badge">Par-3 · 10 holes · Hot Springs</span>
+          </div>
+          <p class="course-desc">Reset with a stunning 10-hole par-3. Chase holes-in-one, bet on the 1-acre putting green, enjoy drinks at the outdoor bar, and dip your toes in the natural hot springs. The perfect afternoon unwind.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">5:00 PM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$150 × 18 players</td><td class="cost-amount">$2,700</td></tr>
+              <tr><td>Cart / Walk</td><td class="cost-calc">$20 × 18 players</td><td class="cost-amount">$360</td></tr>
+              <tr class="total"><td colspan="2"><strong>Day 2 Total</strong></td><td class="cost-amount"><strong>$6,840</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="cost-per-person">Per person (18 players): <strong>$380</strong></p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <footer>
-    <p class="footer-crest">Wisconsin Golf Trip</p>
-    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 100 Holes &nbsp;·&nbsp; 18 Players</p>
-  </footer>
-</div><!-- end #tab-planners -->
+    <!-- DAY 3 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">03</div>
+          <div class="day-info">
+            <p class="day-label">July 11</p>
+            <h2 class="day-title">Autumn Ridge → Whistling Straits Irish</h2>
+            <p class="day-subtitle">David &amp; Goliath</p>
+          </div>
+        </div>
+        <p class="course-desc reveal" style="margin-bottom:2rem;">A local hidden gem in the morning, then one of the top 50 courses in America to close the trip. Two completely different worlds of golf back to back.</p>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+        <div class="course-card estimated reveal">
+          <div class="course-top">
+            <div class="course-name">Autumn Ridge Golf Club</div>
+            <span class="course-badge est">Public · Est. Pricing</span>
+          </div>
+          <p class="course-desc">A Wisconsin hidden gem in Valders — bent grass fairways, challenging greens, and a relaxed public atmosphere. Golf Digest 4-star rated, named one of Wisconsin's best public courses. The perfect David to Whistling Straits' Goliath. Get loose, post a good score, and then go face the monster.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">1 Straight Drive<br>Valders, WI 54245</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 758-3333</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://autumnridgegolfcourse.com" target="_blank">autumnridgegolfcourse.com</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">8:00 AM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$44 × 18 players</td><td class="cost-amount">$792</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$18 × 18 players</td><td class="cost-amount">$324</td></tr>
+            </tbody>
+          </table>
+          <p class="est-note">⚑ Pricing estimated — confirm with Autumn Ridge at (920) 758-3333</p>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Drive to Whistling Straits &nbsp;~30 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">Whistling Straits — Irish Course</div>
+            <span class="course-badge">Pete Dye · Links-Inspired · 18 holes</span>
+          </div>
+          <p class="course-desc">Authentic links-inspired design without the soul-crushing difficulty of The Straits. Everything great about Whistling Straits — the drama, the beauty, the strategy — without the pain. Top 50 in the country.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">3:27 PM (hoping to pull back)</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$350 × 18 players</td><td class="cost-amount">$6,300</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
+              <tr><td>Caddie Tips</td><td class="cost-calc">$100 × 18 players</td><td class="cost-amount">$1,800</td></tr>
+              <tr class="total"><td colspan="2"><strong>Day 3 Total</strong></td><td class="cost-amount"><strong>~$10,116</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="cost-per-person">Per person (18 players): <strong>~$562</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S1 BUDGET SUMMARY -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="summary-section reveal" id="s1-budget-section">
+          <h2 class="summary-title">Trip Summary</h2>
+          <p class="summary-subtitle">Estimated Cost Breakdown · 18 Players · Scenario 1</p>
+          <div class="summary-rows">
+            <div class="summary-row"><div><span class="summary-row-label">Day 1 — Meadow Valleys + Quit Qui Oc</span><span class="summary-row-sub">July 9 · ~$445 / person</span></div><span class="summary-row-amount">~$8,010</span></div>
+            <div class="summary-row"><div><span class="summary-row-label">Day 2 — The Bull + The Baths</span><span class="summary-row-sub">July 10 · $380 / person</span></div><span class="summary-row-amount">$6,840</span></div>
+            <div class="summary-row"><div><span class="summary-row-label">Day 3 — Autumn Ridge + Irish</span><span class="summary-row-sub">July 11 · ~$562 / person</span></div><span class="summary-row-amount">~$10,116</span></div>
+            <div class="summary-row grand"><div><span class="summary-row-label">Total Golf</span></div><span class="summary-row-amount" style="color:var(--gold-light)">~$24,966</span></div>
+          </div>
+          <div class="per-person-box">
+            <div><p class="per-person-label">Estimated total per person</p><p class="per-person-note">Golf only · 18 players · 5 courses</p></div>
+            <div class="per-person-amount">~$1,387</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-crest">Wisconsin Golf Trip · Scenario 1</p>
+      <p class="footer-note">July 9–11 &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 18 Players</p>
+    </footer>
+  </div><!-- end subtab-s1-planners -->
+
+  <!-- ── S1 PLAYERS ── -->
+  <div id="subtab-s1-players" class="sub-tab-panel">
+
+    <!-- DAY 1 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">01</div>
+          <div class="day-info">
+            <p class="day-label">July 9</p>
+            <h2 class="day-title">Blackwolf Meadows → Quit Qui Oc</h2>
+            <p class="day-subtitle">Kohler Sampler Platter</p>
+          </div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning · Arrive 6:30 AM · Tee Time 7:10 AM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-meadows">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">Blackwolf Run — Meadow Valleys</div>
+              <span class="p-course-badge">Kohler, Wisconsin · Pete Dye</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">Prairie</div><div class="p-stat-label">Terrain</div></div>
+            <div class="p-stat"><div class="p-stat-value">7:10</div><div class="p-stat-label">Tee Time</div></div>
+          </div>
+          <div class="p-desc">
+            The morning opener is a Pete Dye gem right in Kohler. Wide, rolling fairways across open heathland and oak savannah — it's demanding but fair, and the views are stunning. This is a warmup in setting only. Dye doesn't give easy rounds. Play focused, because the rest of the trip doesn't get easier from here.
+          </div>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Lunch at Blackwolf · Drive to Quit Qui Oc &nbsp;~30 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon · Arrive 2:00 PM · Tee Time 2:30 PM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-quitquioc">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">Quit Qui Oc Golf Club</div>
+              <span class="p-course-badge">Elkhart Lake, Wisconsin</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">27</div><div class="p-stat-label">Hole Facility</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">Rolling</div><div class="p-stat-label">Terrain</div></div>
+            <div class="p-stat"><div class="p-stat-value">🍺</div><div class="p-stat-label">Great Beer</div></div>
+          </div>
+          <div class="p-desc">
+            The afternoon cooldown. After an early morning at Kohler, Quit Qui Oc is the perfect afternoon pace — relaxed, fun, beautiful. Forgiving enough to post a good number, interesting enough to stay engaged. The on-site restaurant is waiting for you at the end. Day 1 done right.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 2 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">02</div>
+          <div class="day-info">
+            <p class="day-label">July 10</p>
+            <h2 class="day-title">The Bull → The Baths</h2>
+            <p class="day-subtitle">Challenge &amp; Recovery</p>
+          </div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning · Arrive 8:30 AM · Tee Time 9:10 AM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-bull">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">The Bull at Pinehurst Farms</div>
+              <span class="p-course-badge">Jack Nicklaus Signature Design</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Jack</div><div class="p-stat-label">Nicklaus Design</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">Unforgiving</div><div class="p-stat-label">Greens</div></div>
+            <div class="p-stat"><div class="p-stat-value">↑↓</div><div class="p-stat-label">Elevation Drama</div></div>
+          </div>
+          <div class="p-desc">
+            This is where the trip gets serious. A Nicklaus Signature course with dramatic elevation changes that demand every club in your bag. The bunkering is strategic, the greens are fast, and there is no such thing as an autopilot shot here. Play this one like it matters — because it does.
+          </div>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Short drive to The Baths &nbsp;~20 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon · Arrive 4:00 PM · Tee Time 5:00 PM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-baths">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">The Baths at Blackwolf Run</div>
+              <span class="p-course-badge">Kohler, Wisconsin · Natural Springs</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">10</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Par 30</div><div class="p-stat-label">Score</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">1 Acre</div><div class="p-stat-label">Putting Green</div></div>
+            <div class="p-stat"><div class="p-stat-value">🏊</div><div class="p-stat-label">Natural Springs</div></div>
+          </div>
+          <div class="p-desc">
+            Pure decompression. After The Bull beats you up all morning, The Baths is the exact vibe you need. A relaxed 10-hole par-3 where the whole point is to have fun — chase a hole-in-one, make side bets on the 1-acre putting green, and dip your feet in the natural springs on site. One of those afternoons that makes everyone remember why they came on this trip.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 3 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">03</div>
+          <div class="day-info">
+            <p class="day-label">July 11</p>
+            <h2 class="day-title">Autumn Ridge → Whistling Straits Irish</h2>
+            <p class="day-subtitle">David &amp; Goliath</p>
+          </div>
+        </div>
+
+        <p class="course-desc reveal" style="margin-bottom:2rem; font-size:1rem; color:var(--cream);">
+          Start local, finish legendary. A Wisconsin public gem in the morning, then one of the <strong style="color:var(--gold-light)">top 50 courses in America</strong> to close the trip.
+        </p>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning · Arrive 7:30 AM · Tee Time 8:00 AM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-autumnridge">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">Autumn Ridge Golf Club</div>
+              <span class="p-course-badge">Valders, Wisconsin · Golf Digest 4-Star</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Par 70</div><div class="p-stat-label">Score</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">4 Stars</div><div class="p-stat-label">Golf Digest</div></div>
+            <div class="p-stat"><div class="p-stat-value">🌾</div><div class="p-stat-label">Bent Grass</div></div>
+          </div>
+          <div class="p-desc">
+            Wisconsin's best kept secret. Bent grass fairways, manicured greens, and a laid-back public atmosphere that makes every round feel like a local treasure. The contrast with Whistling Straits in the afternoon is exactly the point — this is your chance to post a clean round before facing a Pete Dye masterpiece.
+          </div>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Drive to Whistling Straits &nbsp;~30 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon · Arrive 2:30 PM · Tee Time 3:27 PM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-irish">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">Whistling Straits — Irish Course</div>
+              <span class="p-course-badge">Pete Dye · Links Golf · Kohler</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Top 50</div><div class="p-stat-label">USA Ranking</div></div>
+            <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
+            <div class="p-stat"><div class="p-stat-value">Links</div><div class="p-stat-label">Style</div></div>
+          </div>
+          <div class="p-desc">
+            Whistling Straits without the punishment. The Irish Course delivers genuine links-inspired golf — fescue rough, undulating fairways, wind in your face — but at a level where your round stays fun. This is Pete Dye at his most creative and his most playable. Soak up every hole. You're playing one of the best courses in America, and it closes the trip perfectly.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-crest">Wisconsin Golf Trip · Scenario 1</p>
+      <p class="footer-note">July 9–11 &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 18 Players</p>
+    </footer>
+  </div><!-- end subtab-s1-players -->
+
+</div><!-- end tab-scenario1 -->
 
 
 <!-- ══════════════════════════════════════════
-     TAB: FOR THE PLAYERS
-══════════════════════════════════════════ -->
-<div id="tab-players" class="tab-panel">
-
-  <!-- DAY 1 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">01</div>
-        <div class="day-info">
-          <p class="day-label">Day One</p>
-          <h2 class="day-title">Quit Qui Oc Golf Club</h2>
-          <p class="day-subtitle">The Warm-Up</p>
-        </div>
-      </div>
-
-      <div class="p-course-card reveal">
-        <div class="p-landscape landscape-quitquioc">
-          <div class="p-landscape-overlay">
-            <div class="p-course-name">Quit Qui Oc Golf Club</div>
-            <span class="p-course-badge">Elkhart Lake, Wisconsin</span>
-          </div>
-        </div>
-        <div class="p-stats">
-          <div class="p-stat"><div class="p-stat-value">36</div><div class="p-stat-label">Holes Today</div></div>
-          <div class="p-stat"><div class="p-stat-value">27</div><div class="p-stat-label">Hole Facility</div></div>
-          <div class="p-stat"><div class="p-stat-value sm">One Course</div><div class="p-stat-label">No Travel</div></div>
-          <div class="p-stat"><div class="p-stat-value">🍺</div><div class="p-stat-label">Great Beer</div></div>
-        </div>
-        <div class="p-desc">
-          The perfect warm-up. You're playing all 27 holes the course has to offer — the full original layout plus the Glacial 9 — then coming back around for 9 more to close it out. Rolling terrain, forgiving fairways, and the kind of relaxed energy that reminds you why you love golf. This is where rust gets knocked off and confidence gets built before the serious stuff starts tomorrow.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DAY 2 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">02</div>
-        <div class="day-info">
-          <p class="day-label">Day Two</p>
-          <h2 class="day-title">The Bull → The Baths</h2>
-          <p class="day-subtitle">The Challenge → The Recovery</p>
-        </div>
-      </div>
-
-      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
-      <div class="p-course-card reveal">
-        <div class="p-landscape landscape-bull">
-          <div class="p-landscape-overlay">
-            <div class="p-course-name">The Bull at Pinehurst Farms</div>
-            <span class="p-course-badge">Jack Nicklaus Signature Design</span>
-          </div>
-        </div>
-        <div class="p-stats">
-          <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
-          <div class="p-stat"><div class="p-stat-value">Jack</div><div class="p-stat-label">Nicklaus Design</div></div>
-          <div class="p-stat"><div class="p-stat-value sm">Unforgiving</div><div class="p-stat-label">Greens</div></div>
-          <div class="p-stat"><div class="p-stat-value">↑↓</div><div class="p-stat-label">Elevation Drama</div></div>
-        </div>
-        <div class="p-desc">
-          This is where the trip gets serious. A Nicklaus Signature course with dramatic elevation changes that demand every club in your bag. The bunkering is strategic, the greens are fast, and there is no such thing as an autopilot shot here. Play this one like it matters — because it does.
-        </div>
-      </div>
-
-      <div class="drive-connector reveal">
-        <div class="drive-line"></div>
-        <div class="drive-badge"><span class="drive-arrow">→</span>Short drive to The Baths &nbsp;~20 min</div>
-        <div class="drive-line"></div>
-      </div>
-
-      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
-      <div class="p-course-card reveal">
-        <div class="p-landscape landscape-baths">
-          <div class="p-landscape-overlay">
-            <div class="p-course-name">The Baths at Blackwolf Run</div>
-            <span class="p-course-badge">Kohler, Wisconsin · Natural Springs</span>
-          </div>
-        </div>
-        <div class="p-stats">
-          <div class="p-stat"><div class="p-stat-value">10</div><div class="p-stat-label">Holes</div></div>
-          <div class="p-stat"><div class="p-stat-value">Par 30</div><div class="p-stat-label">Score</div></div>
-          <div class="p-stat"><div class="p-stat-value sm">1 Acre</div><div class="p-stat-label">Putting Green</div></div>
-          <div class="p-stat"><div class="p-stat-value">🏊</div><div class="p-stat-label">Natural Springs</div></div>
-        </div>
-        <div class="p-desc">
-          Pure decompression. After The Bull beats you up all morning, The Baths is the exact vibe you need. It's a relaxed, beautiful 10-hole par-3 where the whole point is to have fun — kick your shoes off, chase a hole-in-one or two, and make some side bets on the 1-acre putting green. Outdoor food and drink vendors are set up so there's no interruption to the good times. When you're done, dip your feet in the natural springs on site. It's one of those afternoons that makes everyone remember why they came on this trip.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DAY 3 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">03</div>
-        <div class="day-info">
-          <p class="day-label">Day Three</p>
-          <h2 class="day-title">Irish → River Course</h2>
-          <p class="day-subtitle">The Grand Finale</p>
-        </div>
-      </div>
-
-      <p class="course-desc reveal" style="margin-bottom:2rem; font-size:1rem; color:var(--cream);">
-        Two of the <strong style="color:var(--gold-light)">top 50 courses in the United States</strong>. Back to back. Both Pete Dye masterpieces. This is the day the trip was built for.
-      </p>
-
-      <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
-      <div class="p-course-card reveal">
-        <div class="p-landscape landscape-irish">
-          <div class="p-landscape-overlay">
-            <div class="p-course-name">Whistling Straits — Irish Course</div>
-            <span class="p-course-badge">Pete Dye · Links Golf · Kohler</span>
-          </div>
-        </div>
-        <div class="p-stats">
-          <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
-          <div class="p-stat"><div class="p-stat-value">Top 50</div><div class="p-stat-label">USA Ranking</div></div>
-          <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
-          <div class="p-stat"><div class="p-stat-value">Links</div><div class="p-stat-label">Style</div></div>
-        </div>
-        <div class="p-desc">
-          Whistling Straits without the punishment. The Irish Course delivers genuine links-inspired golf — fescue rough, undulating fairways, wind in your face — but at a level where your round stays fun. This is Pete Dye at his most creative and his most playable. Soak up every hole. You're playing one of the best courses in America.
-        </div>
-      </div>
-
-      <div class="drive-connector reveal">
-        <div class="drive-line"></div>
-        <div class="drive-badge"><span class="drive-arrow">→</span>Same campus — River Course &nbsp;~10 min</div>
-        <div class="drive-line"></div>
-      </div>
-
-      <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
-      <div class="p-course-card reveal">
-        <div class="p-landscape landscape-river">
-          <div class="p-landscape-overlay">
-            <div class="p-course-name">Blackwolf Run — River Course</div>
-            <span class="p-course-badge">Pete Dye Championship · Kohler</span>
-          </div>
-        </div>
-        <div class="p-stats">
-          <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
-          <div class="p-stat"><div class="p-stat-value">Top 50</div><div class="p-stat-label">USA Ranking</div></div>
-          <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
-          <div class="p-stat"><div class="p-stat-value">River</div><div class="p-stat-label">Runs Through It</div></div>
-        </div>
-        <div class="p-desc">
-          Golf architecture poetry. The Sheboygan River winds through the property, creating carries and risk-reward decisions that stay in your memory long after the round. Ranked among the best courses in America, the River Course is a fitting send-off to the best golf trip of your life. Play every shot like it's your last — because on this course, every single one deserves your full attention.
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ (players) -->
-  <section>
-    <div class="container">
-      <div class="faq-grid">
-        <div class="faq-card reveal"><span class="faq-icon">⛳</span><h3 class="faq-title">Why Not The Straits Course?</h3><p class="faq-body">$750 per round, walking-only, 7,790 yards of unrelenting links golf. That's a solo mission, not a group vibe. We're here to maximize fun, not suffer through one brutal round. The Irish Course gives you everything great about Whistling Straits without the pain.</p></div>
-        <div class="faq-card reveal"><span class="faq-icon">🎯</span><h3 class="faq-title">100 Holes</h3><p class="faq-body">Playing 100 holes instead of 108 means we're leaving shots on the table. I want to see 8% more effort per hole. That means focus, strategy, and treating every shot like it matters. You've got 100 holes to showcase your best golf across 5 completely different courses. Make them count.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <p class="footer-crest">Wisconsin Golf Trip</p>
-    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 100 Holes &nbsp;·&nbsp; 18 Players</p>
-  </footer>
-</div><!-- end #tab-players -->
-
-
-<!-- ══════════════════════════════════════════
-     TAB: SCENARIO 1 — BOOKED TEE TIMES
-══════════════════════════════════════════ -->
-<div id="tab-scenario1" class="tab-panel">
-
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="scenario-banner reveal">
-        <span class="scenario-pill pill-confirmed">✓ Confirmed</span>
-        <h2 class="scenario-banner-title">Our Current Booked Tee Times</h2>
-        <p class="scenario-banner-sub">These are our locked-in bookings. Day 1 kicks off at Kohler before heading to Quit Qui Oc, Day 2 is The Bull followed by The Baths, and Day 3 is a David &amp; Goliath finish — Autumn Ridge in the morning, then Whistling Straits Irish to close it out. We're hoping to pull that final tee time back a few slots.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- DAY 1 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">01</div>
-        <div class="day-info">
-          <p class="day-label">July 9</p>
-          <h2 class="day-title">Blackwolf Meadows → Quit Qui Oc</h2>
-          <p class="day-subtitle">Kohler Sampler Platter</p>
-        </div>
-      </div>
-      <ul class="tl-list reveal">
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">6:30 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Blackwolf Run</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">7:10 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">Blackwolf Meadows Course</div>
-            <div class="tl-sub">Kohler, WI · Destination Kohler</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">12:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Lunch</span>
-            <div class="tl-name">Blackwolf Run Restaurant</div>
-          </div>
-        </li>
-        <li class="tl-item tl-drive">
-          <div class="tl-tc"><span class="tl-time">1:30 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <div class="tl-name">→ Depart Blackwolf · Drive to Quit Qui Oc (~30 min)</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">2:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Quit Qui Oc Golf Club</div>
-            <div class="tl-sub">Elkhart Lake, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">2:30 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">Quit Qui Oc Golf Club</div>
-            <div class="tl-sub">Elkhart Lake, WI · 18 holes</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- DAY 2 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">02</div>
-        <div class="day-info">
-          <p class="day-label">July 10</p>
-          <h2 class="day-title">The Bull → The Baths</h2>
-          <p class="day-subtitle">Challenge &amp; Recovery</p>
-        </div>
-      </div>
-      <ul class="tl-list reveal">
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">8:30 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">The Bull at Pinehurst Farms</div>
-            <div class="tl-sub">Sheboygan Falls, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">9:10 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">The Bull — Jack Nicklaus Signature</div>
-            <div class="tl-sub">18 holes · Sheboygan Falls, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-notime">
-          <div class="tl-tc"><span class="tl-time">—</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Lunch</span>
-            <div class="tl-name">The Bull Clubhouse</div>
-          </div>
-        </li>
-        <li class="tl-item tl-drive">
-          <div class="tl-tc"><span class="tl-time">~3:30 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <div class="tl-name">→ Drive to Blackwolf Run (~20 min)</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">4:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Blackwolf Run</div>
-            <div class="tl-sub">Kohler, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">5:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">The Baths at Blackwolf Run</div>
-            <div class="tl-sub">10-hole par-3 · Natural springs · Outdoor bar</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- DAY 3 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">03</div>
-        <div class="day-info">
-          <p class="day-label">July 11</p>
-          <h2 class="day-title">Autumn Ridge → Whistling Straits Irish</h2>
-          <p class="day-subtitle">David &amp; Goliath</p>
-        </div>
-      </div>
-      <ul class="tl-list reveal">
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">7:30 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Autumn Ridge Golf Club</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">8:00 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">Autumn Ridge Golf Club</div>
-            <div class="tl-sub">18 holes</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">1:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Lunch</span>
-            <div class="tl-name">Autumn Ridge Clubhouse</div>
-          </div>
-        </li>
-        <li class="tl-item tl-drive">
-          <div class="tl-tc"><span class="tl-time">2:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <div class="tl-name">→ Depart Autumn Ridge · Drive to Whistling Straits (~30 min)</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">2:30 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Whistling Straits</div>
-            <div class="tl-sub">Kohler, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">3:27 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">Whistling Straits — Irish Course</div>
-            <div class="tl-sub">Pete Dye · Links-inspired · Top 50 USA</div>
-            <div class="tl-sub caution">⊙ Hoping to pull this back a few tee times</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <footer>
-    <p class="footer-crest">Wisconsin Golf Trip · Scenario 1</p>
-    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; Current Bookings</p>
-  </footer>
-</div><!-- end #tab-scenario1 -->
-
-
-<!-- ══════════════════════════════════════════
-     TAB: SCENARIO 2 — IDEAL TEE TIMES
+     SCENARIO 2 — IDEAL TEE TIMES
 ══════════════════════════════════════════ -->
 <div id="tab-scenario2" class="tab-panel">
 
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="scenario-banner reveal">
-        <span class="scenario-pill pill-waitlist">⏳ Waitlist — July 11 Morning</span>
-        <h2 class="scenario-banner-title">Ideal Tee Times</h2>
-        <p class="scenario-banner-sub">This is the dream schedule — pending getting off the waitlist for July 11 morning at Blackwolf. Day 1 is a full 36-hole day at Quit Qui Oc, Day 2 is The Bull followed by The Baths, and Day 3 finishes with Blackwolf River or Meadows in the morning then Whistling Straits Irish to close.</p>
-      </div>
-    </div>
-  </section>
+  <nav class="sub-tab-nav">
+    <button class="sub-tab-btn active" data-subtab="s2-planners">For the Planners</button>
+    <button class="sub-tab-btn"        data-subtab="s2-players">For the Players</button>
+  </nav>
 
-  <!-- DAY 1 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">01</div>
-        <div class="day-info">
-          <p class="day-label">July 9</p>
-          <h2 class="day-title">Quit Qui Oc — 36 Holes</h2>
-          <p class="day-subtitle">The Warm Up</p>
+  <!-- ── S2 PLANNERS ── -->
+  <div id="subtab-s2-planners" class="sub-tab-panel active">
+
+    <!-- DAY 1 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">01</div>
+          <div class="day-info">
+            <p class="day-label">July 9</p>
+            <h2 class="day-title">Quit Qui Oc — 36 Holes</h2>
+            <p class="day-subtitle">The Warm Up</p>
+          </div>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">Quit Qui Oc Golf Club</div>
+            <span class="course-badge">27-hole Facility · 36 holes played</span>
+          </div>
+          <p class="course-desc">Start with an approachable, fun course to get back in the swing. Perfect for anyone shaking off the rust. Beautiful rolling terrain, friendly vibes — you'll build confidence before tackling the heavier courses ahead.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">500 Quit Qui Oc Lane<br>Elkhart Lake, WI 53020</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 876-2833</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.quitquiocgolf.com" target="_blank">quitquiocgolf.com</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Times</span><span class="meta-value">8:15 AM · 2:30 PM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$75 × 18 players × 2 rounds</td><td class="cost-amount">$2,700</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$25 × 18 players × 2 rounds</td><td class="cost-amount">$900</td></tr>
+              <tr class="total"><td colspan="2"><strong>Day 1 Total</strong></td><td class="cost-amount"><strong>$3,600</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="cost-per-person">Per person (18 players): <strong>$200</strong></p>
         </div>
       </div>
-      <ul class="tl-list reveal">
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">7:30 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Quit Qui Oc Golf Club</div>
-            <div class="tl-sub">Elkhart Lake, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">8:15 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time · Round 1</span>
-            <div class="tl-name">Quit Qui Oc Golf Club</div>
-            <div class="tl-sub">Elkhart Lake, WI · 18 holes</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">1:15 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Lunch</span>
-            <div class="tl-name">Quit Qui Oc Clubhouse</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">2:30 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time · Round 2</span>
-            <div class="tl-name">Quit Qui Oc Golf Club</div>
-            <div class="tl-sub">Elkhart Lake, WI · 18 holes · Back nine replay</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
+    </section>
 
-  <!-- DAY 2 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">02</div>
-        <div class="day-info">
-          <p class="day-label">July 10</p>
-          <h2 class="day-title">The Bull → The Baths</h2>
-          <p class="day-subtitle">Challenge &amp; Recovery</p>
+    <!-- DAY 2 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">02</div>
+          <div class="day-info">
+            <p class="day-label">July 10</p>
+            <h2 class="day-title">The Bull → The Baths</h2>
+            <p class="day-subtitle">Challenge &amp; Recovery</p>
+          </div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">The Bull at Pinehurst Farms</div>
+            <span class="course-badge">Jack Nicklaus Signature · 18 holes</span>
+          </div>
+          <p class="course-desc">Jack Nicklaus's most demanding design. Dramatic elevation changes, strategic bunkering — every shot matters. This is the test that separates your best golf from your average round.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">9425 Highway 32<br>Sheboygan Falls, WI 53085</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(920) 467-1500</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.golfthebull.com" target="_blank">golfthebull.com</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">9:10 AM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$200 × 18 players</td><td class="cost-amount">$3,600</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$10 × 18 players</td><td class="cost-amount">$180</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Drive to The Baths &nbsp;~20 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">The Baths at Blackwolf Run</div>
+            <span class="course-badge">Par-3 · 10 holes · Hot Springs</span>
+          </div>
+          <p class="course-desc">Reset with a stunning 10-hole par-3. Chase holes-in-one, bet on the 1-acre putting green, enjoy drinks at the outdoor bar, and dip your toes in the natural hot springs. The perfect afternoon unwind.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">5:00 PM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$150 × 18 players</td><td class="cost-amount">$2,700</td></tr>
+              <tr><td>Cart / Walk</td><td class="cost-calc">$20 × 18 players</td><td class="cost-amount">$360</td></tr>
+              <tr class="total"><td colspan="2"><strong>Day 2 Total</strong></td><td class="cost-amount"><strong>$6,840</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="cost-per-person">Per person (18 players): <strong>$380</strong></p>
         </div>
       </div>
-      <ul class="tl-list reveal">
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">8:30 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">The Bull at Pinehurst Farms</div>
-            <div class="tl-sub">Sheboygan Falls, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">9:10 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">The Bull — Jack Nicklaus Signature</div>
-            <div class="tl-sub">18 holes · Sheboygan Falls, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-notime">
-          <div class="tl-tc"><span class="tl-time">—</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Lunch</span>
-            <div class="tl-name">The Bull Clubhouse</div>
-          </div>
-        </li>
-        <li class="tl-item tl-drive">
-          <div class="tl-tc"><span class="tl-time">3:30 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <div class="tl-name">→ Depart The Bull · Drive to Blackwolf Run (~20 min)</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">4:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Blackwolf Run</div>
-            <div class="tl-sub">Kohler, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">5:00 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">The Baths at Blackwolf Run</div>
-            <div class="tl-sub">10-hole par-3 · Natural springs · Outdoor bar</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
+    </section>
 
-  <!-- DAY 3 -->
-  <hr class="section-divider" />
-  <section>
-    <div class="container">
-      <div class="day-header reveal">
-        <div class="day-number">03</div>
-        <div class="day-info">
-          <p class="day-label">July 11</p>
-          <h2 class="day-title">Blackwolf Run → Whistling Straits Irish</h2>
-          <p class="day-subtitle">The Grand Finale</p>
+    <!-- DAY 3 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">03</div>
+          <div class="day-info">
+            <p class="day-label">July 11</p>
+            <h2 class="day-title">Blackwolf Run → Whistling Straits Irish</h2>
+            <p class="day-subtitle">The Grand Finale</p>
+          </div>
+        </div>
+        <p class="course-desc reveal" style="margin-bottom:2rem;">Two Pete Dye masterpieces. Both top-tier courses. Both in Kohler. The trip ends exactly where it should.</p>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning</div>
+        <div class="course-card estimated reveal">
+          <div class="course-top">
+            <div class="course-name">Blackwolf Run — River or Meadows</div>
+            <span class="course-badge waitlist">⏳ Waitlist Pending</span>
+          </div>
+          <p class="course-desc">Waiting to get off the waitlist for the morning round. Either the River or Meadows course — both are Pete Dye designs, both are spectacular. River Course winds through the Sheboygan River with dramatic carries and risk/reward decisions. Meadow Valleys is the open prairie masterpiece. Either way, this is a top-50 caliber morning.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">1111 W. Riverside Drive<br>Kohler, WI 53044</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf/blackwolf-run" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">8:00 AM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees (caddie incl.)</td><td class="cost-calc">$295 × 18 players</td><td class="cost-amount">$5,310</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
+            </tbody>
+          </table>
+          <p class="est-note">⚑ Pricing estimated · Course TBD pending waitlist confirmation</p>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Drive to Whistling Straits &nbsp;~10 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon</div>
+        <div class="course-card reveal">
+          <div class="course-top">
+            <div class="course-name">Whistling Straits — Irish Course</div>
+            <span class="course-badge">Pete Dye · Links-Inspired · 18 holes</span>
+          </div>
+          <p class="course-desc">Authentic links-inspired design without the soul-crushing difficulty of The Straits. Everything great about Whistling Straits — the drama, the beauty, the strategy — without the pain. Top 50 in the country.</p>
+          <div class="course-meta">
+            <div class="meta-item"><span class="meta-icon">⊙</span><div><span class="meta-label">Address</span><span class="meta-value">N8501 Lakeshore Road<br>Kohler, WI 53044</span></div></div>
+            <div class="meta-item"><span class="meta-icon">◎</span><div><span class="meta-label">Phone</span><span class="meta-value">(866) 847-4856</span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊛</span><div><span class="meta-label">Website</span><span class="meta-value"><a href="https://www.kohlerwisconsin.com/golf" target="_blank">kohlerwisconsin.com/golf</a></span></div></div>
+            <div class="meta-item"><span class="meta-icon">⊡</span><div><span class="meta-label">Tee Time</span><span class="meta-value">3:15 PM</span></div></div>
+          </div>
+          <table class="cost-table">
+            <thead><tr><th>Item</th><th>Calculation</th><th>Group Total</th></tr></thead>
+            <tbody>
+              <tr><td>Green Fees</td><td class="cost-calc">$350 × 18 players</td><td class="cost-amount">$6,300</td></tr>
+              <tr><td>Cart Rental</td><td class="cost-calc">$50 × 18 players</td><td class="cost-amount">$900</td></tr>
+              <tr><td>Caddie Tips</td><td class="cost-calc">$100 × 18 players</td><td class="cost-amount">$1,800</td></tr>
+              <tr class="total"><td colspan="2"><strong>Day 3 Total</strong></td><td class="cost-amount"><strong>~$15,210</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="cost-per-person">Per person (18 players): <strong>~$845</strong></p>
         </div>
       </div>
-      <div class="scenario-banner reveal" style="margin-bottom:2rem; border-top-color: var(--gold-dim);">
-        <span class="scenario-pill pill-waitlist">⏳ Waitlist Pending — Morning Round</span>
-        <p class="scenario-banner-sub" style="margin-top:0.25rem;">Waiting to get off the waitlist for Blackwolf River or Meadows in the morning. Once confirmed, this is the itinerary.</p>
-      </div>
-      <ul class="tl-list reveal">
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">7:00 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Blackwolf Run</div>
-            <div class="tl-sub">Kohler, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">8:00 AM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">Blackwolf Run — River or Meadows</div>
-            <div class="tl-sub">Kohler, WI · 18 holes · Pete Dye design</div>
-          </div>
-        </li>
-        <li class="tl-item tl-notime">
-          <div class="tl-tc"><span class="tl-time">—</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Lunch</span>
-            <div class="tl-name">Blackwolf Run Restaurant</div>
-          </div>
-        </li>
-        <li class="tl-item tl-drive">
-          <div class="tl-tc"><span class="tl-time">2:15 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <div class="tl-name">→ Depart Blackwolf · Drive to Whistling Straits (~30 min)</div>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-tc"><span class="tl-time">2:45 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Arrive</span>
-            <div class="tl-name">Whistling Straits</div>
-            <div class="tl-sub">Kohler, WI</div>
-          </div>
-        </li>
-        <li class="tl-item tl-tee">
-          <div class="tl-tc"><span class="tl-time">3:15 PM</span></div>
-          <div class="tl-dc"><div class="tl-dot"></div></div>
-          <div class="tl-bd">
-            <span class="tl-tag">Tee Time</span>
-            <div class="tl-name">Whistling Straits — Irish Course</div>
-            <div class="tl-sub">Pete Dye · Links-inspired · Top 50 USA · The Grand Finale</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
+    </section>
 
-  <footer>
-    <p class="footer-crest">Wisconsin Golf Trip · Scenario 2</p>
-    <p class="footer-note">3 Days &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; Dream Schedule</p>
-  </footer>
-</div><!-- end #tab-scenario2 -->
+    <!-- S2 BUDGET SUMMARY -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="summary-section reveal" id="s2-budget-section">
+          <h2 class="summary-title">Trip Summary</h2>
+          <p class="summary-subtitle">Estimated Cost Breakdown · 18 Players · Scenario 2</p>
+          <div class="summary-rows">
+            <div class="summary-row"><div><span class="summary-row-label">Day 1 — Quit Qui Oc (36 holes)</span><span class="summary-row-sub">July 9 · $200 / person</span></div><span class="summary-row-amount">$3,600</span></div>
+            <div class="summary-row"><div><span class="summary-row-label">Day 2 — The Bull + The Baths</span><span class="summary-row-sub">July 10 · $380 / person</span></div><span class="summary-row-amount">$6,840</span></div>
+            <div class="summary-row"><div><span class="summary-row-label">Day 3 — Blackwolf + Irish</span><span class="summary-row-sub">July 11 · ~$845 / person</span></div><span class="summary-row-amount">~$15,210</span></div>
+            <div class="summary-row grand"><div><span class="summary-row-label">Total Golf</span></div><span class="summary-row-amount" style="color:var(--gold-light)">~$25,650</span></div>
+          </div>
+          <div class="per-person-box">
+            <div><p class="per-person-label">Estimated total per person</p><p class="per-person-note">Golf only · 18 players · 5 courses</p></div>
+            <div class="per-person-amount">~$1,425</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-crest">Wisconsin Golf Trip · Scenario 2</p>
+      <p class="footer-note">July 9–11 &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 18 Players</p>
+    </footer>
+  </div><!-- end subtab-s2-planners -->
+
+  <!-- ── S2 PLAYERS ── -->
+  <div id="subtab-s2-players" class="sub-tab-panel">
+
+    <!-- DAY 1 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">01</div>
+          <div class="day-info">
+            <p class="day-label">July 9</p>
+            <h2 class="day-title">Quit Qui Oc — 36 Holes</h2>
+            <p class="day-subtitle">The Warm Up</p>
+          </div>
+        </div>
+
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-quitquioc">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">Quit Qui Oc Golf Club</div>
+              <span class="p-course-badge">Elkhart Lake, Wisconsin</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">36</div><div class="p-stat-label">Holes Today</div></div>
+            <div class="p-stat"><div class="p-stat-value">27</div><div class="p-stat-label">Hole Facility</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">One Course</div><div class="p-stat-label">No Travel</div></div>
+            <div class="p-stat"><div class="p-stat-value">🍺</div><div class="p-stat-label">Great Beer</div></div>
+          </div>
+          <div class="p-desc">
+            The perfect warm-up. You're playing all 27 holes the course has to offer — the full original layout plus the Glacial 9 — then coming back around for 9 more to close it out. Rolling terrain, forgiving fairways, and the kind of relaxed energy that reminds you why you love golf. Tee time 1 at 8:15 AM, lunch at 1:15 PM, back out at 2:30 PM. Day 1 is a full one.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 2 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">02</div>
+          <div class="day-info">
+            <p class="day-label">July 10</p>
+            <h2 class="day-title">The Bull → The Baths</h2>
+            <p class="day-subtitle">Challenge &amp; Recovery</p>
+          </div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning · Arrive 8:30 AM · Tee Time 9:10 AM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-bull">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">The Bull at Pinehurst Farms</div>
+              <span class="p-course-badge">Jack Nicklaus Signature Design</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Jack</div><div class="p-stat-label">Nicklaus Design</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">Unforgiving</div><div class="p-stat-label">Greens</div></div>
+            <div class="p-stat"><div class="p-stat-value">↑↓</div><div class="p-stat-label">Elevation Drama</div></div>
+          </div>
+          <div class="p-desc">
+            This is where the trip gets serious. A Nicklaus Signature course with dramatic elevation changes that demand every club in your bag. The bunkering is strategic, the greens are fast, and there is no such thing as an autopilot shot here. Play this one like it matters — because it does.
+          </div>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Short drive to The Baths &nbsp;~20 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon · Arrive 4:00 PM · Tee Time 5:00 PM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-baths">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">The Baths at Blackwolf Run</div>
+              <span class="p-course-badge">Kohler, Wisconsin · Natural Springs</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">10</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Par 30</div><div class="p-stat-label">Score</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">1 Acre</div><div class="p-stat-label">Putting Green</div></div>
+            <div class="p-stat"><div class="p-stat-value">🏊</div><div class="p-stat-label">Natural Springs</div></div>
+          </div>
+          <div class="p-desc">
+            Pure decompression. After The Bull beats you up all morning, The Baths is the exact vibe you need. It's a relaxed, beautiful 10-hole par-3 where the whole point is to have fun — kick your shoes off, chase a hole-in-one or two, and make some side bets on the 1-acre putting green. Outdoor food and drink vendors, natural springs on site. It's one of those afternoons.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DAY 3 -->
+    <hr class="section-divider" />
+    <section>
+      <div class="container">
+        <div class="day-header reveal">
+          <div class="day-number">03</div>
+          <div class="day-info">
+            <p class="day-label">July 11</p>
+            <h2 class="day-title">Blackwolf Run → Whistling Straits Irish</h2>
+            <p class="day-subtitle">The Grand Finale</p>
+          </div>
+        </div>
+
+        <p class="course-desc reveal" style="margin-bottom:2rem; font-size:1rem; color:var(--cream);">
+          Two of the <strong style="color:var(--gold-light)">top 50 courses in the United States</strong>. Both Pete Dye masterpieces. Both in Kohler. This is the day the trip was built for.
+        </p>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Morning · Arrive 7:00 AM · Tee Time 8:00 AM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-river">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">Blackwolf Run — River or Meadows</div>
+              <span class="p-course-badge waitlist">⏳ Waitlist Pending · Kohler</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Top 50</div><div class="p-stat-label">USA Ranking</div></div>
+            <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
+            <div class="p-stat"><div class="p-stat-value sm">TBD</div><div class="p-stat-label">Course Selection</div></div>
+          </div>
+          <div class="p-desc">
+            Waiting to get off the waitlist — and it's going to be worth the wait. River Course weaves through the Sheboygan River with dramatic carries and risk-reward decisions that stay in your memory long after the round. Meadow Valleys is the sweeping prairie version. Either way, you're starting the final day on a world-class Pete Dye course at 8 AM. Get after it.
+          </div>
+        </div>
+
+        <div class="drive-connector reveal">
+          <div class="drive-line"></div>
+          <div class="drive-badge"><span class="drive-arrow">→</span>Same campus — Whistling Straits &nbsp;~10 min</div>
+          <div class="drive-line"></div>
+        </div>
+
+        <div class="time-label reveal"><span class="time-dot"></span>Afternoon · Arrive 2:45 PM · Tee Time 3:15 PM</div>
+        <div class="p-course-card reveal">
+          <div class="p-landscape landscape-irish">
+            <div class="p-landscape-overlay">
+              <div class="p-course-name">Whistling Straits — Irish Course</div>
+              <span class="p-course-badge">Pete Dye · Links Golf · Kohler</span>
+            </div>
+          </div>
+          <div class="p-stats">
+            <div class="p-stat"><div class="p-stat-value">18</div><div class="p-stat-label">Holes</div></div>
+            <div class="p-stat"><div class="p-stat-value">Top 50</div><div class="p-stat-label">USA Ranking</div></div>
+            <div class="p-stat"><div class="p-stat-value">Pete</div><div class="p-stat-label">Dye Design</div></div>
+            <div class="p-stat"><div class="p-stat-value">Links</div><div class="p-stat-label">Style</div></div>
+          </div>
+          <div class="p-desc">
+            Whistling Straits without the punishment. The Irish Course delivers genuine links-inspired golf — fescue rough, undulating fairways, wind in your face — but at a level where your round stays fun. This is Pete Dye at his most creative and his most playable. Soak up every hole. You're playing one of the best courses in America. The trip ends on the most beautiful course known to man.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-crest">Wisconsin Golf Trip · Scenario 2</p>
+      <p class="footer-note">July 9–11 &nbsp;·&nbsp; 5 Courses &nbsp;·&nbsp; 18 Players</p>
+    </footer>
+  </div><!-- end subtab-s2-players -->
+
+</div><!-- end tab-scenario2 -->
 
 
 <script>
-  // ── Tab switching
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabPanels = document.querySelectorAll('.tab-panel');
-
-  tabBtns.forEach(btn => {
+  // ── Top-level tab switching (scenario1 / scenario2)
+  document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.dataset.tab;
-      tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === target));
-      tabPanels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + target));
-      // scroll to top of content
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === target));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + target));
       window.scrollTo({ top: document.querySelector('.tab-nav').offsetTop, behavior: 'smooth' });
-      // re-trigger reveals in newly active panel
       setTimeout(triggerReveal, 100);
-      // animate budget bar if switching to planners
-      if (target === 'planners') setTimeout(animateBudgetBar, 300);
+    });
+  });
+
+  // ── Sub-tab switching (scoped to parent scenario panel)
+  document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.subtab;
+      const parentPanel = btn.closest('.tab-panel');
+      parentPanel.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.subtab === target));
+      parentPanel.querySelectorAll('.sub-tab-panel').forEach(p => p.classList.toggle('active', p.id === 'subtab-' + target));
+      setTimeout(triggerReveal, 100);
+      if (target.endsWith('-planners')) setTimeout(animateBudgetBars, 300);
     });
   });
 
@@ -1375,21 +1206,24 @@
         if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-    document.querySelectorAll('.tab-panel.active .reveal:not(.visible)').forEach(el => obs.observe(el));
+    document.querySelectorAll('.sub-tab-panel.active .reveal:not(.visible), .tab-panel.active > .reveal:not(.visible)').forEach(el => obs.observe(el));
   }
   triggerReveal();
 
-  // ── Budget bar animation
-  function animateBudgetBar() {
-    const bar = document.getElementById('budget-bar');
-    if (bar) bar.classList.add('animate');
+  // ── Budget bar animations
+  function animateBudgetBars() {
+    document.querySelectorAll('.budget-bar').forEach(bar => bar.classList.add('animate'));
   }
-  // Animate on first load if planners is active
-  const budgetObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { animateBudgetBar(); budgetObs.disconnect(); } });
-  }, { threshold: 0.3 });
-  const budgetSection = document.getElementById('budget-section');
-  if (budgetSection) budgetObs.observe(budgetSection);
+
+  // Observe both budget sections
+  ['s1-budget-section', 's2-budget-section'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { animateBudgetBars(); obs.disconnect(); } });
+    }, { threshold: 0.3 });
+    obs.observe(el);
+  });
 </script>
 
 </body>
